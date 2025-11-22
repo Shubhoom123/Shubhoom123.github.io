@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Developer</title>
+    <title>Shubham Khalkho - Developer</title>
     <link rel="stylesheet" href="index.css">
+    <script>
+        // Define toggle function in head so it's available immediately
+        function toggleCategory(header) {
+            const content = header.nextElementSibling;
+            const isActive = content.classList.contains('active');
+            
+            // Close all other main categories
+            document.querySelectorAll('.category-content').forEach(cat => {
+                cat.classList.remove('active');
+            });
+            document.querySelectorAll('.category-header').forEach(h => {
+                h.classList.remove('active');
+            });
+            
+            // Toggle current category
+            if (!isActive) {
+                content.classList.add('active');
+                header.classList.add('active');
+            }
+        }
+
+        // Toggle difficulty level subcategory
+        function toggleDifficulty(header) {
+            const content = header.nextElementSibling;
+            const isActive = content.classList.contains('active');
+            
+            // Toggle current difficulty level
+            if (isActive) {
+                content.classList.remove('active');
+                header.classList.remove('active');
+            } else {
+                content.classList.add('active');
+                header.classList.add('active');
+            }
+        }
+    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -20,11 +54,12 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div>
-            <h1>Your Name</h1>
-            <p class="subtitle">Full Stack Developer</p>
+            <h1>Shubham Khalkho</h1>
+            <p class="subtitle">Developer. Student. Tech-Enthusiast.</p>
             <p class="description">
-                I build elegant solutions to complex problems. Specializing in web development, 
-                with a focus on clean code and exceptional user experiences.
+                Senior at Arizona State University with a passion for building new projects and learn. 
+                This is my portfolio which showcases my skills in the Languages and Tools I learnt.
+                A lot of them took me a lot of them and these are some of the best projects I made through out the time of my education.
             </p>
             <a href="#projects" class="cta-link">View my work →</a>
         </div>
@@ -32,42 +67,157 @@
 
     <!-- Projects Section -->
     <section id="projects">
-        <h2>Selected Projects</h2>
+        <h2>My Projects</h2>
         
-        <div class="project fade-in">
-            <h3>E-Commerce Platform</h3>
-            <p>
-                Built a full-stack e-commerce solution with payment integration, user authentication, 
-                and an admin dashboard. Handles 10k+ daily active users with optimized performance.
-            </p>
-            <p class="project-tech">React • Node.js • MongoDB • Stripe API</p>
+        <!-- Machine Learning Projects -->
+        <div class="project-category">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <h3 class="category-title">Machine Learning Projects</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            
+            <div class="category-content">
+                <!-- Beginner Level -->
+                <div class="difficulty-level">
+                    <div class="difficulty-header" onclick="toggleDifficulty(this)">
+                        <h4 class="difficulty-title">1) Beginner</h4>
+                        <span class="toggle-icon-small">▸</span>
+                    </div>
+                    <div class="difficulty-content">
+                        <div class="project fade-in">
+                            <h5><a href="#" class="project-link" target="_blank">Heart Disease Prediction</a></h5>
+                            <p>
+                                Predicts the likelihood of heart disease using clinical indicators such as age, cholesterol, 
+                                blood pressure, and heart rate. Explores medical risk factors through data analysis and builds 
+                                ML models for early disease detection with comprehensive model evaluation.
+                            </p>
+                            <p class="project-tech">Python • Pandas • NumPy • Scikit-learn • Logistic Regression • Random Forest • SVM</p>
+                        </div>
+
+                        <div class="project fade-in">
+                            <h5><a href="#" class="project-link" target="_blank">Movie Ratings Analysis & ANN Model</a></h5>
+                            <p>
+                                Analyzes viewer rating patterns and builds a predictive model to estimate movie ratings based on 
+                                genre data. Includes both traditional ML models and a neural-network-based approach using Keras/TensorFlow 
+                                for improved predictive accuracy with PCA dimensionality reduction and K-Means clustering.
+                            </p>
+                            <p class="project-tech">Python • Pandas • NumPy • Keras • TensorFlow • PCA • K-Means • Decision Tree</p>
+                        </div>
+
+                        <div class="project fade-in">
+                            <h5><a href="#" class="project-link" target="_blank">Premier League Performance Analysis</a></h5>
+                            <p>
+                                Explores English Premier League team performances over time, focusing on total wins, home vs. away 
+                                results, and win percentages for top-tier clubs. Provides insights into competitive patterns across 
+                                big teams through data storytelling and sports analytics.
+                            </p>
+                            <p class="project-tech">R • Python • R Markdown • Data Visualization • Statistical Analysis • Sports Analytics</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intermediate Level -->
+                <div class="difficulty-level">
+                    <div class="difficulty-header" onclick="toggleDifficulty(this)">
+                        <h4 class="difficulty-title">2) Intermediate</h4>
+                        <span class="toggle-icon-small">▸</span>
+                    </div>
+                    <div class="difficulty-content">
+                        <div class="project fade-in">
+                            <h5>Coming Soon</h5>
+                            <p>More intermediate projects will be added here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Level -->
+                <div class="difficulty-level">
+                    <div class="difficulty-header" onclick="toggleDifficulty(this)">
+                        <h4 class="difficulty-title">3) Advanced</h4>
+                        <span class="toggle-icon-small">▸</span>
+                    </div>
+                    <div class="difficulty-content">
+                        <div class="project fade-in">
+                            <h5>Coming Soon</h5>
+                            <p>More advanced projects will be added here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="project fade-in">
-            <h3>Task Management System</h3>
-            <p>
-                Collaborative task management tool with real-time updates. Features include team 
-                collaboration, deadline tracking, and automated notifications.
-            </p>
-            <p class="project-tech">Vue.js • Firebase • WebSocket</p>
+        <!-- JavaScript/Frontend Projects -->
+        <div class="project-category">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <h3 class="category-title">JavaScript / Frontend Projects</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            
+            <div class="category-content">
+                <div class="project fade-in">
+                    <h4>Interactive Data Visualization</h4>
+                    <p>
+                        Dynamic data visualization library with custom charts and real-time updates. 
+                        Supports multiple chart types and interactive tooltips.
+                    </p>
+                    <p class="project-tech">JavaScript • D3.js • Canvas API • WebSocket</p>
+                </div>
+
+                <div class="project fade-in">
+                    <h4>Real-time Collaboration Tool</h4>
+                    <p>
+                        Browser-based collaborative whiteboard with real-time synchronization. 
+                        Supports multiple users, drawing tools, and chat functionality.
+                    </p>
+                    <p class="project-tech">JavaScript • WebRTC • Socket.io • HTML5 Canvas</p>
+                </div>
+
+                <div class="project fade-in">
+                    <h4>Progressive Web App</h4>
+                    <p>
+                        Offline-first PWA with service workers and local storage. Features push 
+                        notifications and background sync for seamless user experience.
+                    </p>
+                    <p class="project-tech">JavaScript • Service Workers • IndexedDB • Workbox</p>
+                </div>
+            </div>
         </div>
 
-        <div class="project fade-in">
-            <h3>Data Visualization Dashboard</h3>
-            <p>
-                Interactive analytics dashboard for business intelligence. Processes large datasets 
-                in real-time with custom visualizations and export capabilities.
-            </p>
-            <p class="project-tech">React • D3.js • PostgreSQL • Express</p>
-        </div>
+        <!-- Full Stack Projects -->
+        <div class="project-category">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <h3 class="category-title">Full Stack Development Projects</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            
+            <div class="category-content">
+                <div class="project fade-in">
+                    <h4>E-Commerce Platform</h4>
+                    <p>
+                        Full-stack e-commerce solution with payment integration, user authentication, 
+                        and admin dashboard. Handles 10k+ daily active users with optimized performance.
+                    </p>
+                    <p class="project-tech">React • Node.js • MongoDB • Stripe API</p>
+                </div>
 
-        <div class="project fade-in">
-            <h3>AI-Powered Chatbot</h3>
-            <p>
-                Intelligent customer support chatbot using natural language processing. 
-                Reduced support ticket volume by 40% through automated responses.
-            </p>
-            <p class="project-tech">Python • TensorFlow • FastAPI</p>
+                <div class="project fade-in">
+                    <h4>Task Management System</h4>
+                    <p>
+                        Collaborative task management tool with real-time updates. Features team 
+                        collaboration, deadline tracking, and automated notifications.
+                    </p>
+                    <p class="project-tech">Vue.js • Express • PostgreSQL • WebSocket</p>
+                </div>
+
+                <div class="project fade-in">
+                    <h4>Social Media Analytics Platform</h4>
+                    <p>
+                        Analytics platform for tracking social media metrics across multiple platforms. 
+                        Features automated reporting and trend analysis.
+                    </p>
+                    <p class="project-tech">React • Python • FastAPI • Redis • AWS</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -133,8 +283,8 @@
             <a href="mailto:your.email@example.com" class="contact-link">
                 Email <span>your.email@example.com</span>
             </a>
-            <a href="https://github.com/yourusername" target="_blank" class="contact-link">
-                GitHub <span>@yourusername</span>
+            <a href="https://github.com/Shubhoom123" target="_blank" class="contact-link">
+                GitHub <span>@Shubhoom123</span>
             </a>
             <a href="https://linkedin.com/in/yourusername" target="_blank" class="contact-link">
                 LinkedIn <span>/in/yourusername</span>
@@ -147,7 +297,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>© 2025 Your Name. Designed & built with care.</p>
+        <p>© 2025 Shubham Khalkho. Designed & built with care.</p>
     </footer>
 
     <script src="index.js"></script>

@@ -32,9 +32,9 @@ window.addEventListener('scroll', () => {
     });
     
     navLinks.forEach(link => {
-        link.style.color = '#888';
+        link.style.color = '#707070';
         if (link.getAttribute('href').slice(1) === current) {
-            link.style.color = '#fff';
+            link.style.color = '#2D2D2D';
         }
     });
 });
@@ -79,13 +79,13 @@ const skillItems = document.querySelectorAll('.skill-group li');
 
 skillItems.forEach(item => {
     item.addEventListener('mouseenter', function() {
-        this.style.color = '#fff';
+        this.style.color = '#2D2D2D';
         this.style.transform = 'translateX(5px)';
         this.style.transition = 'all 0.3s ease';
     });
     
     item.addEventListener('mouseleave', function() {
-        this.style.color = '#888';
+        this.style.color = '#707070';
         this.style.transform = 'translateX(0)';
     });
 });
@@ -132,7 +132,7 @@ const createCursorTrail = () => {
     trail.style.width = '5px';
     trail.style.height = '5px';
     trail.style.borderRadius = '50%';
-    trail.style.background = '#fff';
+    trail.style.background = '#2D2D2D';
     trail.style.opacity = '0.3';
     trail.style.pointerEvents = 'none';
     trail.style.zIndex = '9999';
@@ -159,6 +159,6 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Console message for recruiters
-console.log('%cHey there! 👋', 'font-size: 20px; font-weight: bold; color: #fff;');
-console.log('%cLooks like you\'re checking out the code. I like your style!', 'font-size: 14px; color: #888;');
-console.log('%cFeel free to reach out if you want to collaborate.', 'font-size: 14px; color: #888;');
+console.log('%cHey there! 👋', 'font-size: 20px; font-weight: bold; color: #2D2D2D;');
+console.log('%cLooks like you\'re checking out the code. I like your style!', 'font-size: 14px; color: #707070;');
+console.log('%cFeel free to reach out if you want to collaborate.', 'font-size: 14px; color: #707070;');
