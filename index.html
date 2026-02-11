@@ -1,299 +1,460 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Shubham Khalkho - Developer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shubham Khalkho - Portfolio</title>
     <link rel="stylesheet" href="index.css">
-    <script>
-        // Define toggle function in head so it's available immediately
-        function toggleCategory(header) {
-            const content = header.nextElementSibling;
-            const isActive = content.classList.contains('active');
-            
-            // Close all other main categories
-            document.querySelectorAll('.category-content').forEach(cat => {
-                cat.classList.remove('active');
-            });
-            document.querySelectorAll('.category-header').forEach(h => {
-                h.classList.remove('active');
-            });
-            
-            // Toggle current category
-            if (!isActive) {
-                content.classList.add('active');
-                header.classList.add('active');
-            }
-        }
-
-        // Toggle difficulty level subcategory
-        function toggleDifficulty(header) {
-            const content = header.nextElementSibling;
-            const isActive = content.classList.contains('active');
-            
-            // Toggle current difficulty level
-            if (isActive) {
-                content.classList.remove('active');
-                header.classList.remove('active');
-            } else {
-                content.classList.add('active');
-                header.classList.add('active');
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+    <div class="vscode-window">
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div>
-            <h1>Shubham Khalkho</h1>
-            <p class="subtitle">Developer. Student. Tech-Enthusiast.</p>
-            <p class="description">
-                Senior at Arizona State University with a passion for building new projects and learn. 
-                This is my portfolio which showcases my skills in the Languages and Tools I learnt.
-                A lot of them took me a lot of them and these are some of the best projects I made through out the time of my education.
-            </p>
-            <a href="#projects" class="cta-link">View my work →</a>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-        <h2>My Projects</h2>
-        
-        <!-- Machine Learning Projects -->
-        <div class="project-category">
-            <div class="category-header" onclick="toggleCategory(this)">
-                <h3 class="category-title">Machine Learning Projects</h3>
-                <span class="toggle-icon">▼</span>
+        <!-- Title Bar -->
+        <div class="titlebar">
+            <div class="titlebar-left">
+                <div class="titlebar-icon"><i class="fas fa-code"></i></div>
+                <div class="titlebar-menus">
+                    <span>File</span><span>Edit</span><span>Selection</span><span>View</span><span>Go</span><span>Run</span><span>Terminal</span><span>Help</span>
+                </div>
             </div>
-            
-            <div class="category-content">
-                <!-- Beginner Level -->
-                <div class="difficulty-level">
-                    <div class="difficulty-header" onclick="toggleDifficulty(this)">
-                        <h4 class="difficulty-title">1) Beginner</h4>
-                        <span class="toggle-icon-small">▸</span>
+            <div class="titlebar-center">Shubham Khalkho — Portfolio</div>
+            <div class="titlebar-controls">
+                <div class="control minimize"></div>
+                <div class="control maximize"></div>
+                <div class="control close"></div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+
+            <!-- Activity Bar -->
+            <div class="activity-bar">
+                <div class="activity-icon active" data-section="explorer" title="Explorer">
+                    <i class="fas fa-copy"></i>
+                </div>
+                <div class="activity-icon" data-section="search" title="Search">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="activity-icon" data-section="git" title="Source Control">
+                    <i class="fas fa-code-branch"></i>
+                </div>
+                <div class="activity-icon" data-section="extensions" title="Extensions">
+                    <i class="fas fa-puzzle-piece"></i>
+                </div>
+                <div class="activity-spacer"></div>
+                <div class="activity-icon bottom-icon" title="GitHub">
+                    <a href="https://github.com/Shubhoom123" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+                <div class="activity-icon bottom-icon" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">EXPLORER</div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title" onclick="toggleSidebarSection(this)">
+                        <i class="fas fa-chevron-down"></i> PORTFOLIO
                     </div>
-                    <div class="difficulty-content">
-                        <div class="project fade-in">
-                            <h5><a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Heart_Disease" class="project-link" target="_blank">Heart Disease Prediction</a></h5>
-                            <p>
-                                Predicts the likelihood of heart disease using clinical indicators such as age, cholesterol, 
-                                blood pressure, and heart rate. Explores medical risk factors through data analysis and builds 
-                                ML models for early disease detection with comprehensive model evaluation.
-                            </p>
-                            <p class="project-tech">Python • Pandas • NumPy • Scikit-learn • Logistic Regression • Random Forest • SVM</p>
+                    <div class="sidebar-files active">
+                        <div class="file-item active" data-tab="about" onclick="openTab('about', this)">
+                            <i class="fas fa-file-code file-icon html-icon"></i> about.html
                         </div>
-
-                        <div class="project fade-in">
-                            <h5><a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Movie_Rating" class="project-link" target="_blank">Movie Ratings Analysis & ANN Model</a></h5>
-                            <p>
-                                Analyzes viewer rating patterns and builds a predictive model to estimate movie ratings based on 
-                                genre data. Includes both traditional ML models and a neural-network-based approach using Keras/TensorFlow 
-                                for improved predictive accuracy with PCA dimensionality reduction and K-Means clustering.
-                            </p>
-                            <p class="project-tech">Python • Pandas • NumPy • Keras • TensorFlow • PCA • K-Means • Decision Tree</p>
+                        <div class="file-item" data-tab="projects" onclick="openTab('projects', this)">
+                            <i class="fas fa-file-code file-icon js-icon"></i> projects.js
                         </div>
-
-                        <div class="project fade-in">
-                            <h5><a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Premier_League" class="project-link" target="_blank">Premier League Performance Analysis</a></h5>
-                            <p>
-                                Explores English Premier League team performances over time, focusing on total wins, home vs. away 
-                                results, and win percentages for top-tier clubs. Provides insights into competitive patterns across 
-                                big teams through data storytelling and sports analytics.
-                            </p>
-                            <p class="project-tech">R • Python • R Markdown • Data Visualization • Statistical Analysis • Sports Analytics</p>
+                        <div class="file-item" data-tab="skills" onclick="openTab('skills', this)">
+                            <i class="fas fa-file-code file-icon json-icon"></i> skills.json
+                        </div>
+                        <div class="file-item" data-tab="experience" onclick="openTab('experience', this)">
+                            <i class="fas fa-file-code file-icon ts-icon"></i> experience.ts
+                        </div>
+                        <div class="file-item" data-tab="contact" onclick="openTab('contact', this)">
+                            <i class="fas fa-file-code file-icon css-icon"></i> contact.css
                         </div>
                     </div>
                 </div>
-
-                <!-- Intermediate Level -->
-                <div class="difficulty-level">
-                    <div class="difficulty-header" onclick="toggleDifficulty(this)">
-                        <h4 class="difficulty-title">2) Intermediate</h4>
-                        <span class="toggle-icon-small">▸</span>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title" onclick="toggleSidebarSection(this)">
+                        <i class="fas fa-chevron-right"></i> MACHINE LEARNING
                     </div>
-                    <div class="difficulty-content">
-                        <div class="project fade-in">
-                            <h5>Coming Soon</h5>
-                            <p>More intermediate projects will be added here.</p>
+                    <div class="sidebar-files">
+                        <div class="file-item" data-tab="ml-projects" onclick="openTab('ml-projects', this)">
+                            <i class="fas fa-file-code file-icon py-icon"></i> ml_projects.py
                         </div>
                     </div>
                 </div>
-
-                <!-- Advanced Level -->
-                <div class="difficulty-level">
-                    <div class="difficulty-header" onclick="toggleDifficulty(this)">
-                        <h4 class="difficulty-title">3) Advanced</h4>
-                        <span class="toggle-icon-small">▸</span>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title" onclick="toggleSidebarSection(this)">
+                        <i class="fas fa-chevron-right"></i> FULL STACK
                     </div>
-                    <div class="difficulty-content">
-                        <div class="project fade-in">
-                            <h5>Coming Soon</h5>
-                            <p>More advanced projects will be added here.</p>
+                    <div class="sidebar-files">
+                        <div class="file-item" data-tab="fullstack" onclick="openTab('fullstack', this)">
+                            <i class="fas fa-file-code file-icon jsx-icon"></i> fullstack.jsx
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Editor Area -->
+            <div class="editor-area">
+
+                <!-- Tabs -->
+                <div class="tab-bar" id="tabBar">
+                    <div class="tab active" data-tab="about" onclick="openTab('about')">
+                        <i class="fas fa-file-code file-icon html-icon"></i>
+                        <span>about.html</span>
+                        <span class="tab-close" onclick="event.stopPropagation(); closeTab('about', this.parentElement)">&times;</span>
+                    </div>
+                </div>
+
+                <!-- Breadcrumbs -->
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <span>portfolio</span> <i class="fas fa-chevron-right"></i> <span id="breadcrumb-file">about.html</span>
+                </div>
+
+                <!-- Editor Content -->
+                <div class="editor-content" id="editorContent">
+                    <div class="editor-scroll">
+
+                        <!-- About Tab -->
+                        <div class="tab-content active" id="tab-about">
+                            <div class="code-block">
+                                <div class="line"><span class="line-num"> 1</span><span class="tag">&lt;!DOCTYPE</span> <span class="attr">html</span><span class="tag">&gt;</span></div>
+                                <div class="line"><span class="line-num"> 2</span><span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="string">"en"</span><span class="tag">&gt;</span></div>
+                                <div class="line"><span class="line-num"> 3</span><span class="tag">&lt;head&gt;</span></div>
+                                <div class="line"><span class="line-num"> 4</span>  <span class="tag">&lt;title&gt;</span><span class="text">Shubham Khalkho — Developer</span><span class="tag">&lt;/title&gt;</span></div>
+                                <div class="line"><span class="line-num"> 5</span><span class="tag">&lt;/head&gt;</span></div>
+                                <div class="line"><span class="line-num"> 6</span><span class="tag">&lt;body&gt;</span></div>
+                                <div class="line"><span class="line-num"> 7</span></div>
+                                <div class="line"><span class="line-num"> 8</span>  <span class="comment">&lt;!-- ============================================ --&gt;</span></div>
+                                <div class="line"><span class="line-num"> 9</span>  <span class="comment">&lt;!--  Hello! I'm Shubham Khalkho               --&gt;</span></div>
+                                <div class="line"><span class="line-num">10</span>  <span class="comment">&lt;!--  Developer. Student. Tech-Enthusiast.      --&gt;</span></div>
+                                <div class="line"><span class="line-num">11</span>  <span class="comment">&lt;!-- ============================================ --&gt;</span></div>
+                                <div class="line"><span class="line-num">12</span></div>
+                                <div class="line"><span class="line-num">13</span>  <span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="string">"hero"</span><span class="tag">&gt;</span></div>
+                                <div class="line"><span class="line-num">14</span></div>
+
+                                <!-- Hero Card -->
+                                <div class="line"><span class="line-num">15</span></div>
+                                <div class="hero-card">
+                                    <h1 class="glitch-text" data-text="Shubham Khalkho">Shubham Khalkho</h1>
+                                    <p class="hero-subtitle" id="typingText"></p>
+                                    <p class="hero-desc">
+                                        Senior at Arizona State University with a passion for building new projects and learning.
+                                        This portfolio showcases my skills in languages and tools I've mastered.
+                                        Many projects here took significant effort and represent the best work from my education.
+                                    </p>
+                                    <div class="hero-links">
+                                        <a href="https://github.com/Shubhoom123" target="_blank" class="hero-btn"><i class="fab fa-github"></i> GitHub</a>
+                                        <a href="https://www.linkedin.com/in/shubham-khalkho-4997b2212/" target="_blank" class="hero-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                                        <a href="mailto:khalkhoshubham03@gmail.com" class="hero-btn"><i class="fas fa-envelope"></i> Email</a>
+                                    </div>
+                                </div>
+
+                                <div class="line"><span class="line-num">16</span></div>
+                                <div class="line"><span class="line-num">17</span>  <span class="tag">&lt;/section&gt;</span></div>
+                                <div class="line"><span class="line-num">18</span></div>
+                                <div class="line"><span class="line-num">19</span><span class="tag">&lt;/body&gt;</span></div>
+                                <div class="line"><span class="line-num">20</span><span class="tag">&lt;/html&gt;</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Projects Tab (ML) -->
+                        <div class="tab-content" id="tab-ml-projects">
+                            <div class="code-block">
+                                <div class="line"><span class="line-num"> 1</span><span class="comment"># ml_projects.py</span></div>
+                                <div class="line"><span class="line-num"> 2</span><span class="comment"># Machine Learning Portfolio — Beginner Tier</span></div>
+                                <div class="line"><span class="line-num"> 3</span></div>
+                                <div class="line"><span class="line-num"> 4</span><span class="keyword">import</span> <span class="text">sklearn</span></div>
+                                <div class="line"><span class="line-num"> 5</span><span class="keyword">import</span> <span class="text">tensorflow</span> <span class="keyword">as</span> <span class="text">tf</span></div>
+                                <div class="line"><span class="line-num"> 6</span><span class="keyword">import</span> <span class="text">pandas</span> <span class="keyword">as</span> <span class="text">pd</span></div>
+                                <div class="line"><span class="line-num"> 7</span></div>
+                                <div class="line"><span class="line-num"> 8</span></div>
+
+                                <!-- ML Project Cards -->
+                                <div class="project-card">
+                                    <div class="project-card-header">
+                                        <span class="project-tag beginner">BEGINNER</span>
+                                        <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Heart_Disease" target="_blank" class="project-link-btn"><i class="fab fa-github"></i> View Code</a>
+                                    </div>
+                                    <h3>Heart Disease Prediction</h3>
+                                    <p>Predicts the likelihood of heart disease using clinical indicators such as age, cholesterol, blood pressure, and heart rate. Explores medical risk factors through data analysis and builds ML models for early disease detection.</p>
+                                    <div class="tech-tags">
+                                        <span>Python</span><span>Pandas</span><span>NumPy</span><span>Scikit-learn</span><span>Logistic Regression</span><span>Random Forest</span><span>SVM</span>
+                                    </div>
+                                </div>
+
+                                <div class="project-card">
+                                    <div class="project-card-header">
+                                        <span class="project-tag beginner">BEGINNER</span>
+                                        <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Movie_Rating" target="_blank" class="project-link-btn"><i class="fab fa-github"></i> View Code</a>
+                                    </div>
+                                    <h3>Movie Ratings Analysis & ANN Model</h3>
+                                    <p>Analyzes viewer rating patterns and builds a predictive model to estimate movie ratings based on genre data. Includes traditional ML and a neural-network-based approach using Keras/TensorFlow with PCA dimensionality reduction and K-Means clustering.</p>
+                                    <div class="tech-tags">
+                                        <span>Python</span><span>Pandas</span><span>Keras</span><span>TensorFlow</span><span>PCA</span><span>K-Means</span><span>Decision Tree</span>
+                                    </div>
+                                </div>
+
+                                <div class="project-card">
+                                    <div class="project-card-header">
+                                        <span class="project-tag beginner">BEGINNER</span>
+                                        <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Premier_League" target="_blank" class="project-link-btn"><i class="fab fa-github"></i> View Code</a>
+                                    </div>
+                                    <h3>Premier League Performance Analysis</h3>
+                                    <p>Explores English Premier League team performances over time, focusing on total wins, home vs. away results, and win percentages for top-tier clubs. Provides insights through data storytelling and sports analytics.</p>
+                                    <div class="tech-tags">
+                                        <span>R</span><span>Python</span><span>R Markdown</span><span>Data Viz</span><span>Statistical Analysis</span><span>Sports Analytics</span>
+                                    </div>
+                                </div>
+
+                                <div class="line"><span class="line-num"> 9</span></div>
+                                <div class="line"><span class="line-num">10</span><span class="comment"># Intermediate & Advanced tiers coming soon...</span></div>
+                                <div class="line"><span class="line-num">11</span><span class="keyword">class</span> <span class="function">IntermediateProjects</span>: <span class="keyword">pass</span>  <span class="comment"># TODO</span></div>
+                                <div class="line"><span class="line-num">12</span><span class="keyword">class</span> <span class="function">AdvancedProjects</span>: <span class="keyword">pass</span>  <span class="comment"># TODO</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Projects Tab (JS) -->
+                        <div class="tab-content" id="tab-projects">
+                            <div class="code-block">
+                                <div class="line"><span class="line-num"> 1</span><span class="comment">// projects.js</span></div>
+                                <div class="line"><span class="line-num"> 2</span><span class="comment">// JavaScript & Frontend Projects</span></div>
+                                <div class="line"><span class="line-num"> 3</span></div>
+                                <div class="line"><span class="line-num"> 4</span><span class="keyword">const</span> <span class="variable">projects</span> = [</div>
+                                <div class="line"><span class="line-num"> 5</span></div>
+
+                                <div class="coming-soon-card">
+                                    <i class="fas fa-rocket"></i>
+                                    <h3>JavaScript / Frontend Projects</h3>
+                                    <p>Exciting frontend projects coming soon. Stay tuned!</p>
+                                </div>
+
+                                <div class="line"><span class="line-num"> 6</span>];</div>
+                                <div class="line"><span class="line-num"> 7</span></div>
+                                <div class="line"><span class="line-num"> 8</span><span class="keyword">export default</span> <span class="variable">projects</span>;</div>
+                            </div>
+                        </div>
+
+                        <!-- Full Stack Tab -->
+                        <div class="tab-content" id="tab-fullstack">
+                            <div class="code-block">
+                                <div class="line"><span class="line-num"> 1</span><span class="comment">// fullstack.jsx</span></div>
+                                <div class="line"><span class="line-num"> 2</span><span class="comment">// Full Stack Development Projects</span></div>
+                                <div class="line"><span class="line-num"> 3</span></div>
+                                <div class="line"><span class="line-num"> 4</span><span class="keyword">import</span> <span class="text">React</span> <span class="keyword">from</span> <span class="string">'react'</span>;</div>
+                                <div class="line"><span class="line-num"> 5</span></div>
+
+                                <div class="project-card">
+                                    <div class="project-card-header">
+                                        <span class="project-tag live">LIVE</span>
+                                        <a href="https://collaborative-coding-editor-frontend.onrender.com" target="_blank" class="project-link-btn"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                                    </div>
+                                    <h3>Real-Time Collaborative Code Editor</h3>
+                                    <p>A real-time collaborative code editor enabling multiple users to write code together simultaneously. Features live synchronization, syntax highlighting for 8+ languages, integrated chat system, and room-based collaboration with WebSocket technology.</p>
+                                    <div class="tech-tags">
+                                        <span>React</span><span>Node.js</span><span>Socket.io</span><span>Monaco Editor</span><span>Express</span><span>WebSocket</span>
+                                    </div>
+                                </div>
+
+                                <div class="project-card">
+                                    <div class="project-card-header">
+                                        <span class="project-tag wip">IN PROGRESS</span>
+                                    </div>
+                                    <h3>E-Commerce Platform</h3>
+                                    <p>Full-stack e-commerce solution with payment integration, user authentication, and admin dashboard. Handles 10k+ daily active users with optimized performance.</p>
+                                    <div class="tech-tags">
+                                        <span>React</span><span>Node.js</span><span>MongoDB</span><span>Stripe API</span>
+                                    </div>
+                                </div>
+
+                                <div class="project-card">
+                                    <div class="project-card-header">
+                                        <span class="project-tag wip">IN PROGRESS</span>
+                                    </div>
+                                    <h3>Task Management System</h3>
+                                    <p>Collaborative task management tool with real-time updates. Features team collaboration, deadline tracking, and automated notifications.</p>
+                                    <div class="tech-tags">
+                                        <span>Vue.js</span><span>Express</span><span>PostgreSQL</span><span>WebSocket</span>
+                                    </div>
+                                </div>
+
+                                <div class="project-card">
+                                    <div class="project-card-header">
+                                        <span class="project-tag wip">IN PROGRESS</span>
+                                    </div>
+                                    <h3>Social Media Analytics Platform</h3>
+                                    <p>Analytics platform for tracking social media metrics across multiple platforms. Features automated reporting and trend analysis.</p>
+                                    <div class="tech-tags">
+                                        <span>React</span><span>Python</span><span>FastAPI</span><span>Redis</span><span>AWS</span>
+                                    </div>
+                                </div>
+
+                                <div class="line"><span class="line-num"> 6</span></div>
+                                <div class="line"><span class="line-num"> 7</span><span class="keyword">export default</span> <span class="function">FullStackProjects</span>;</div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Tab -->
+                        <div class="tab-content" id="tab-skills">
+                            <div class="code-block">
+                                <div class="line"><span class="line-num"> 1</span>{</div>
+                                <div class="line"><span class="line-num"> 2</span>  <span class="attr">"name"</span>: <span class="string">"Shubham Khalkho"</span>,</div>
+                                <div class="line"><span class="line-num"> 3</span>  <span class="attr">"role"</span>: <span class="string">"Full Stack Developer"</span>,</div>
+                                <div class="line"><span class="line-num"> 4</span>  <span class="attr">"skills"</span>: {</div>
+                                <div class="line"><span class="line-num"> 5</span></div>
+
+                                <div class="skills-grid-vscode">
+                                    <div class="skill-card-vscode">
+                                        <h4><i class="fas fa-palette"></i> Frontend</h4>
+                                        <div class="skill-list">
+                                            <div class="skill-item"><span class="skill-dot js"></span> JavaScript</div>
+                                            <div class="skill-item"><span class="skill-dot html"></span> HTML & CSS</div>
+                                            <div class="skill-item"><span class="skill-dot ts"></span> TypeScript</div>
+                                            <div class="skill-item"><span class="skill-dot react"></span> React</div>
+                                            <div class="skill-item"><span class="skill-dot angular"></span> Angular</div>
+                                            <div class="skill-item"><span class="skill-dot next"></span> Next.js</div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-card-vscode">
+                                        <h4><i class="fas fa-server"></i> Backend</h4>
+                                        <div class="skill-list">
+                                            <div class="skill-item"><span class="skill-dot node"></span> Node.js & Express</div>
+                                            <div class="skill-item"><span class="skill-dot python"></span> Python & Django</div>
+                                            <div class="skill-item"><span class="skill-dot api"></span> RESTful APIs</div>
+                                            <div class="skill-item"><span class="skill-dot graphql"></span> GraphQL</div>
+                                            <div class="skill-item"><span class="skill-dot ws"></span> WebSocket</div>
+                                            <div class="skill-item"><span class="skill-dot auth"></span> Authentication</div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-card-vscode">
+                                        <h4><i class="fas fa-database"></i> Database</h4>
+                                        <div class="skill-list">
+                                            <div class="skill-item"><span class="skill-dot mongo"></span> MongoDB</div>
+                                            <div class="skill-item"><span class="skill-dot pg"></span> PostgreSQL</div>
+                                            <div class="skill-item"><span class="skill-dot mysql"></span> MySQL</div>
+                                            <div class="skill-item"><span class="skill-dot redis"></span> Redis</div>
+                                            <div class="skill-item"><span class="skill-dot firebase"></span> Firebase</div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-card-vscode">
+                                        <h4><i class="fas fa-tools"></i> Tools & Others</h4>
+                                        <div class="skill-list">
+                                            <div class="skill-item"><span class="skill-dot git"></span> Git & GitHub</div>
+                                            <div class="skill-item"><span class="skill-dot docker"></span> Docker</div>
+                                            <div class="skill-item"><span class="skill-dot aws"></span> AWS</div>
+                                            <div class="skill-item"><span class="skill-dot jenkins"></span> Jenkins</div>
+                                            <div class="skill-item"><span class="skill-dot test"></span> Testing (Jest, Pytest)</div>
+                                            <div class="skill-item"><span class="skill-dot agile"></span> Agile / Scrum</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="line"><span class="line-num"> 6</span>  }</div>
+                                <div class="line"><span class="line-num"> 7</span>}</div>
+                            </div>
+                        </div>
+
+                        <!-- Experience Tab -->
+                        <div class="tab-content" id="tab-experience">
+                            <div class="code-block">
+                                <div class="line"><span class="line-num"> 1</span><span class="comment">// experience.ts</span></div>
+                                <div class="line"><span class="line-num"> 2</span></div>
+                                <div class="line"><span class="line-num"> 3</span><span class="keyword">interface</span> <span class="function">Education</span> {</div>
+                                <div class="line"><span class="line-num"> 4</span>  <span class="attr">university</span>: <span class="keyword">string</span>;</div>
+                                <div class="line"><span class="line-num"> 5</span>  <span class="attr">status</span>: <span class="keyword">string</span>;</div>
+                                <div class="line"><span class="line-num"> 6</span>}</div>
+                                <div class="line"><span class="line-num"> 7</span></div>
+
+                                <div class="experience-card">
+                                    <div class="exp-icon"><i class="fas fa-graduation-cap"></i></div>
+                                    <div class="exp-details">
+                                        <h3>Arizona State University</h3>
+                                        <p class="exp-role">Senior — Computer Science</p>
+                                        <p class="exp-desc">Passionate about building new projects and learning. Currently in my final year, focusing on full-stack development and machine learning.</p>
+                                    </div>
+                                </div>
+
+                                <div class="line"><span class="line-num"> 8</span></div>
+                                <div class="line"><span class="line-num"> 9</span><span class="keyword">const</span> <span class="variable">passion</span>: <span class="keyword">string</span> = <span class="string">"Building things that matter"</span>;</div>
+                                <div class="line"><span class="line-num">10</span><span class="keyword">const</span> <span class="variable">goal</span>: <span class="keyword">string</span> = <span class="string">"Continuous learning and growth"</span>;</div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Tab -->
+                        <div class="tab-content" id="tab-contact">
+                            <div class="code-block">
+                                <div class="line"><span class="line-num"> 1</span><span class="comment">/* contact.css */</span></div>
+                                <div class="line"><span class="line-num"> 2</span><span class="comment">/* Let's connect! Here's how to reach me. */</span></div>
+                                <div class="line"><span class="line-num"> 3</span></div>
+                                <div class="line"><span class="line-num"> 4</span><span class="selector">.contact</span> {</div>
+                                <div class="line"><span class="line-num"> 5</span></div>
+
+                                <div class="contact-grid-vscode">
+                                    <a href="mailto:khalkhoshubham03@gmail.com" class="contact-card-vscode">
+                                        <i class="fas fa-envelope"></i>
+                                        <h4>Email</h4>
+                                        <p>khalkhoshubham03@gmail.com</p>
+                                    </a>
+                                    <a href="https://github.com/Shubhoom123" target="_blank" class="contact-card-vscode">
+                                        <i class="fab fa-github"></i>
+                                        <h4>GitHub</h4>
+                                        <p>@Shubhoom123</p>
+                                    </a>
+                                    <a href="https://www.linkedin.com/in/shubham-khalkho-4997b2212/" target="_blank" class="contact-card-vscode">
+                                        <i class="fab fa-linkedin"></i>
+                                        <h4>LinkedIn</h4>
+                                        <p>Shubham Khalkho</p>
+                                    </a>
+                                </div>
+
+                                <div class="line"><span class="line-num"> 6</span>}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Terminal Panel -->
+                <div class="terminal-panel" id="terminalPanel">
+                    <div class="terminal-header">
+                        <div class="terminal-tabs">
+                            <span class="terminal-tab active"><i class="fas fa-terminal"></i> Terminal</span>
+                            <span class="terminal-tab">Problems</span>
+                            <span class="terminal-tab">Output</span>
+                        </div>
+                        <div class="terminal-actions">
+                            <span class="terminal-toggle" onclick="toggleTerminal()"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="terminal-body" id="terminalBody">
+                        <div class="terminal-line"><span class="terminal-prompt">shubham@portfolio:~$</span> <span class="terminal-cmd" id="terminalTyping"></span><span class="terminal-cursor">▋</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- JavaScript/Frontend Projects -->
-        <div class="project-category">
-            <div class="category-header" onclick="toggleCategory(this)">
-                <h3 class="category-title">JavaScript / Frontend Projects</h3>
-                <span class="toggle-icon">▼</span>
+        <!-- Status Bar -->
+        <div class="statusbar">
+            <div class="statusbar-left">
+                <span class="statusbar-item branch"><i class="fas fa-code-branch"></i> main</span>
+                <span class="statusbar-item"><i class="fas fa-sync-alt"></i></span>
+                <span class="statusbar-item errors"><i class="fas fa-times-circle"></i> 0 <i class="fas fa-exclamation-triangle"></i> 0</span>
             </div>
-            
-            <div class="category-content">
-                <div class="project fade-in">
-                    <h4>Coming Soon</h4>
-                </div>
-
-                <div class="project fade-in">
-                    <h4>Coming Soon</h4>
-                </div>
-
-                <div class="project fade-in">
-                    <h4>Coming Soon</h4>
-                </div>
+            <div class="statusbar-right">
+                <span class="statusbar-item">Ln 1, Col 1</span>
+                <span class="statusbar-item">Spaces: 2</span>
+                <span class="statusbar-item">UTF-8</span>
+                <span class="statusbar-item" id="statusFileType">HTML</span>
+                <span class="statusbar-item">Prettier</span>
+                <span class="statusbar-item bell"><i class="fas fa-bell"></i></span>
             </div>
         </div>
-
-        <!-- Full Stack Projects -->
-        <div class="project-category">
-            <div class="category-header" onclick="toggleCategory(this)">
-                <h3 class="category-title">Full Stack Development Projects</h3>
-                <span class="toggle-icon">▼</span>
-            </div>
-            
-            <div class="category-content">
-                <div class="project fade-in">
-                    <h4><a href="https://collaborative-coding-editor-frontend.onrender.com" class="project-link" target="_blank">Real-Time Collaborative Code Editor</a></h4>
-                    <p>
-                        A real-time collaborative code editor that enables multiple users to write code together simultaneously. 
-                        Features live synchronization, syntax highlighting for 8+ programming languages, integrated chat system, 
-                        and room-based collaboration. Built with WebSocket technology for instant updates across all connected users.
-                    </p>
-                    <p class="project-tech">React • Node.js • Socket.io • Monaco Editor • Express • WebSocket</p>
-                </div>
-
-                <div class="project fade-in">
-                    <h4>E-Commerce Platform</h4>
-                    <p>
-                        Full-stack e-commerce solution with payment integration, user authentication, 
-                        and admin dashboard. Handles 10k+ daily active users with optimized performance.
-                    </p>
-                    <p class="project-tech">React • Node.js • MongoDB • Stripe API</p>
-                </div>
-
-                <div class="project fade-in">
-                    <h4>Task Management System</h4>
-                    <p>
-                        Collaborative task management tool with real-time updates. Features team 
-                        collaboration, deadline tracking, and automated notifications.
-                    </p>
-                    <p class="project-tech">Vue.js • Express • PostgreSQL • WebSocket</p>
-                </div>
-
-                <div class="project fade-in">
-                    <h4>Social Media Analytics Platform</h4>
-                    <p>
-                        Analytics platform for tracking social media metrics across multiple platforms. 
-                        Features automated reporting and trend analysis.
-                    </p>
-                    <p class="project-tech">React • Python • FastAPI • Redis • AWS</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills">
-        <h2>Skills & Technologies</h2>
-        
-        <div class="skills-grid">
-            <div class="skill-group">
-                <h3>Frontend</h3>
-                <ul>
-                    <li>JavaScript (ES6+)</li>
-                    <li>React.js</li>
-                    <li>Vue.js</li>
-                    <li>HTML5 & CSS3</li>
-                    <li>Responsive Design</li>
-                    <li>TypeScript</li>
-                </ul>
-            </div>
-
-            <div class="skill-group">
-                <h3>Backend</h3>
-                <ul>
-                    <li>Node.js & Express</li>
-                    <li>Python & Django</li>
-                    <li>RESTful APIs</li>
-                    <li>GraphQL</li>
-                    <li>WebSocket</li>
-                    <li>Authentication</li>
-                </ul>
-            </div>
-
-            <div class="skill-group">
-                <h3>Database</h3>
-                <ul>
-                    <li>MongoDB</li>
-                    <li>PostgreSQL</li>
-                    <li>MySQL</li>
-                    <li>Redis</li>
-                    <li>Firebase</li>
-                </ul>
-            </div>
-
-            <div class="skill-group">
-                <h3>Tools & Others</h3>
-                <ul>
-                    <li>Git & GitHub</li>
-                    <li>Docker</li>
-                    <li>AWS</li>
-                    <li>CI/CD</li>
-                    <li>Testing (Jest, Pytest)</li>
-                    <li>Agile/Scrum</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <h2>Get In Touch</h2>
-        
-        <div class="contact-links">
-            <a href="mailto:your.email@example.com" class="contact-link">
-                Email <span>your.email@example.com</span>
-            </a>
-            <a href="https://github.com/Shubhoom123" target="_blank" class="contact-link">
-                GitHub <span>@Shubhoom123</span>
-            </a>
-            <a href="https://linkedin.com/in/yourusername" target="_blank" class="contact-link">
-                LinkedIn <span>/in/yourusername</span>
-            </a>
-            <a href="https://twitter.com/yourusername" target="_blank" class="contact-link">
-                Twitter <span>@yourusername</span>
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>© 2025 Shubham Khalkho. Designed & built with care.</p>
-    </footer>
+    </div>
 
     <script src="index.js"></script>
 </body>

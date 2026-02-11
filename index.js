@@ -1,164 +1,242 @@
-// Smooth scroll animation observer
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+// ========================================
+// VS Code Portfolio — index.js
+// ========================================
+
+// Tab data mapping
+const tabFileMap = {
+    'about':       { file: 'about.html',      icon: 'html-icon', type: 'HTML' },
+    'projects':    { file: 'projects.js',      icon: 'js-icon',   type: 'JavaScript' },
+    'skills':      { file: 'skills.json',      icon: 'json-icon', type: 'JSON' },
+    'experience':  { file: 'experience.ts',    icon: 'ts-icon',   type: 'TypeScript' },
+    'contact':     { file: 'contact.css',      icon: 'css-icon',  type: 'CSS' },
+    'ml-projects': { file: 'ml_projects.py',   icon: 'py-icon',   type: 'Python' },
+    'fullstack':   { file: 'fullstack.jsx',    icon: 'jsx-icon',  type: 'React JSX' }
 };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.animation = 'fadeIn 0.8s ease-out';
-        }
-    });
-}, observerOptions);
+// Track open tabs
+let openTabs = new Set(['about']);
+let activeTab = 'about';
 
-// Observe all projects for fade-in animation
-document.querySelectorAll('.project').forEach(el => observer.observe(el));
+// Open a tab
+function openTab(tabId, fileElement) {
+    // Add to open tabs
+    openTabs.add(tabId);
 
-// Add active state to navigation links based on scroll position
-const sections = document.querySelectorAll('section');
-const navLinks = document.querySelectorAll('nav a');
+    // Deactivate all tabs and content
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.file-item').forEach(f => f.classList.remove('active'));
 
-window.addEventListener('scroll', () => {
-    let current = '';
+    // Show tab content
+    const content = document.getElementById('tab-' + tabId);
+    if (content) content.classList.add('active');
+
+    // Activate file in sidebar
+    if (fileElement) {
+        fileElement.classList.add('active');
+    } else {
+        const sidebarFile = document.querySelector(`.file-item[data-tab="${tabId}"]`);
+        if (sidebarFile) sidebarFile.classList.add('active');
+    }
+
+    // Create tab if doesn't exist in tab bar
+    const tabBar = document.getElementById('tabBar');
+    let existingTab = tabBar.querySelector(`.tab[data-tab="${tabId}"]`);
     
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (window.pageYOffset >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
+    if (!existingTab) {
+        const info = tabFileMap[tabId];
+        const tab = document.createElement('div');
+        tab.className = 'tab';
+        tab.dataset.tab = tabId;
+        tab.onclick = () => openTab(tabId);
+        tab.innerHTML = `
+            <i class="fas fa-file-code file-icon ${info.icon}"></i>
+            <span>${info.file}</span>
+            <span class="tab-close" onclick="event.stopPropagation(); closeTab('${tabId}', this.parentElement)">&times;</span>
+        `;
+        tabBar.appendChild(tab);
+        existingTab = tab;
+    }
+
+    // Activate the tab
+    existingTab.classList.add('active');
+    activeTab = tabId;
+
+    // Update breadcrumbs
+    const info = tabFileMap[tabId];
+    document.getElementById('breadcrumb-file').textContent = info.file;
+
+    // Update status bar file type
+    document.getElementById('statusFileType').textContent = info.type;
+
+    // Scroll editor to top
+    document.getElementById('editorContent').scrollTop = 0;
+}
+
+// Close a tab
+function closeTab(tabId, tabElement) {
+    openTabs.delete(tabId);
     
-    navLinks.forEach(link => {
-        link.style.color = '#707070';
-        if (link.getAttribute('href').slice(1) === current) {
-            link.style.color = '#2D2D2D';
+    if (tabElement) {
+        tabElement.remove();
+    }
+
+    // Hide content
+    const content = document.getElementById('tab-' + tabId);
+    if (content) content.classList.remove('active');
+
+    // If we closed the active tab, switch to last open tab
+    if (activeTab === tabId) {
+        const remaining = Array.from(openTabs);
+        if (remaining.length > 0) {
+            openTab(remaining[remaining.length - 1]);
         }
-    });
-});
+    }
 
-// Add typing effect to the hero subtitle
-const subtitleElement = document.querySelector('.hero .subtitle');
-const subtitleText = subtitleElement.textContent;
-subtitleElement.textContent = '';
+    // Deactivate sidebar file
+    const sidebarFile = document.querySelector(`.file-item[data-tab="${tabId}"]`);
+    if (sidebarFile) sidebarFile.classList.remove('active');
+}
 
-let charIndex = 0;
+// Toggle sidebar sections
+function toggleSidebarSection(titleEl) {
+    const filesEl = titleEl.nextElementSibling;
+    const chevron = titleEl.querySelector('i');
 
-function typeWriter() {
-    if (charIndex < subtitleText.length) {
-        subtitleElement.textContent += subtitleText.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeWriter, 100);
+    if (filesEl.classList.contains('active')) {
+        filesEl.classList.remove('active');
+        chevron.className = 'fas fa-chevron-right';
+    } else {
+        filesEl.classList.add('active');
+        chevron.className = 'fas fa-chevron-down';
     }
 }
 
-// Start typing effect when page loads
-window.addEventListener('load', () => {
-    setTimeout(typeWriter, 500);
-});
+// Toggle terminal
+function toggleTerminal() {
+    const panel = document.getElementById('terminalPanel');
+    const icon = panel.querySelector('.terminal-toggle i');
+    
+    if (panel.classList.contains('collapsed')) {
+        panel.classList.remove('collapsed');
+        icon.className = 'fas fa-chevron-down';
+    } else {
+        panel.classList.add('collapsed');
+        icon.className = 'fas fa-chevron-up';
+    }
+}
 
-// Add smooth scroll behavior for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+// ========================================
+// Typing Effects
+// ========================================
+
+// Hero subtitle typing
+const heroTexts = [
+    'Developer.',
+    'Student.',
+    'Tech-Enthusiast.',
+    'Problem Solver.',
+    'Full Stack Dev.'
+];
+
+let heroTextIndex = 0;
+let heroCharIndex = 0;
+let isDeleting = false;
+const typingEl = document.getElementById('typingText');
+
+function typeHero() {
+    const current = heroTexts[heroTextIndex];
+    
+    if (!isDeleting) {
+        typingEl.textContent = '> ' + current.substring(0, heroCharIndex + 1);
+        heroCharIndex++;
+
+        if (heroCharIndex === current.length) {
+            setTimeout(() => { isDeleting = true; typeHero(); }, 2000);
+            return;
+        }
+        setTimeout(typeHero, 80);
+    } else {
+        typingEl.textContent = '> ' + current.substring(0, heroCharIndex);
+        heroCharIndex--;
+
+        if (heroCharIndex < 0) {
+            isDeleting = false;
+            heroTextIndex = (heroTextIndex + 1) % heroTexts.length;
+            heroCharIndex = 0;
+            setTimeout(typeHero, 400);
+            return;
+        }
+        setTimeout(typeHero, 40);
+    }
+}
+
+// Terminal typing effect
+const terminalCommands = [
+    'cat welcome.txt',
+    'echo "Welcome to my portfolio!"',
+    'node server.js --port 3000',
+    'npm run build && npm run deploy',
+    'git push origin main'
+];
+
+let termCmdIndex = 0;
+let termCharIndex = 0;
+const termTypingEl = document.getElementById('terminalTyping');
+
+function typeTerminal() {
+    const cmd = terminalCommands[termCmdIndex];
+
+    if (termCharIndex <= cmd.length) {
+        termTypingEl.textContent = cmd.substring(0, termCharIndex);
+        termCharIndex++;
+        setTimeout(typeTerminal, 60);
+    } else {
+        setTimeout(() => {
+            termCharIndex = 0;
+            termCmdIndex = (termCmdIndex + 1) % terminalCommands.length;
+            termTypingEl.textContent = '';
+            setTimeout(typeTerminal, 500);
+        }, 3000);
+    }
+}
+
+// ========================================
+// Activity Bar Interaction
+// ========================================
+
+document.querySelectorAll('.activity-icon[data-section]').forEach(icon => {
+    icon.addEventListener('click', () => {
+        const section = icon.dataset.section;
+
+        document.querySelectorAll('.activity-icon[data-section]').forEach(i => i.classList.remove('active'));
+        icon.classList.add('active');
+
+        const sidebar = document.getElementById('sidebar');
+        if (section === 'explorer') {
+            sidebar.style.display = 'block';
+        } else {
+            // Toggle sidebar for non-explorer sections
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = 'block';
+            } else {
+                sidebar.style.display = 'none';
+            }
         }
     });
 });
 
-// Add skill animation on hover
-const skillItems = document.querySelectorAll('.skill-group li');
+// ========================================
+// Initialize
+// ========================================
 
-skillItems.forEach(item => {
-    item.addEventListener('mouseenter', function() {
-        this.style.color = '#2D2D2D';
-        this.style.transform = 'translateX(5px)';
-        this.style.transition = 'all 0.3s ease';
-    });
-    
-    item.addEventListener('mouseleave', function() {
-        this.style.color = '#707070';
-        this.style.transform = 'translateX(0)';
-    });
+window.addEventListener('load', () => {
+    // Start typing effects
+    setTimeout(typeHero, 600);
+    setTimeout(typeTerminal, 1200);
 });
 
-// Add project hover effect
-const projects = document.querySelectorAll('.project');
-
-projects.forEach(project => {
-    project.addEventListener('mouseenter', function() {
-        this.style.paddingLeft = '20px';
-        this.style.transition = 'padding-left 0.3s ease';
-    });
-    
-    project.addEventListener('mouseleave', function() {
-        this.style.paddingLeft = '0';
-    });
-});
-
-// Show/hide navigation on scroll
-let lastScroll = 0;
-const nav = document.querySelector('nav');
-
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll <= 0) {
-        nav.style.transform = 'translateY(0)';
-    } else if (currentScroll > lastScroll && currentScroll > 100) {
-        // Scrolling down
-        nav.style.transform = 'translateY(-100%)';
-    } else {
-        // Scrolling up
-        nav.style.transform = 'translateY(0)';
-    }
-    
-    nav.style.transition = 'transform 0.3s ease';
-    lastScroll = currentScroll;
-});
-
-// Add cursor trail effect (optional - can be commented out if too much)
-const createCursorTrail = () => {
-    const trail = document.createElement('div');
-    trail.style.position = 'fixed';
-    trail.style.width = '5px';
-    trail.style.height = '5px';
-    trail.style.borderRadius = '50%';
-    trail.style.background = '#2D2D2D';
-    trail.style.opacity = '0.3';
-    trail.style.pointerEvents = 'none';
-    trail.style.zIndex = '9999';
-    
-    document.body.appendChild(trail);
-    
-    setTimeout(() => {
-        trail.style.opacity = '0';
-        trail.style.transition = 'opacity 0.5s ease';
-        setTimeout(() => trail.remove(), 500);
-    }, 100);
-    
-    return trail;
-};
-
-let trailTimeout;
-document.addEventListener('mousemove', (e) => {
-    clearTimeout(trailTimeout);
-    trailTimeout = setTimeout(() => {
-        const trail = createCursorTrail();
-        trail.style.left = e.pageX + 'px';
-        trail.style.top = e.pageY + 'px';
-    }, 50);
-});
-
-// Console message for recruiters
-console.log('%cHey there! 👋', 'font-size: 20px; font-weight: bold; color: #2D2D2D;');
-console.log('%cLooks like you\'re checking out the code. I like your style!', 'font-size: 14px; color: #707070;');
-console.log('%cFeel free to reach out if you want to collaborate.', 'font-size: 14px; color: #707070;');
+// Console easter egg
+console.log('%c✨ Shubham Khalkho — Portfolio', 'font-size: 18px; font-weight: bold; color: #007acc;');
+console.log('%cBuilt to look like VS Code. Pretty cool, right?', 'font-size: 13px; color: #858585;');
+console.log('%cFeel free to reach out if you want to collaborate!', 'font-size: 13px; color: #4ec9b0;');
