@@ -1,0 +1,264 @@
+<html>
+<head>
+    <title>Shubham Khalkho - Portfolio</title>
+    <link rel="stylesheet" href="portfolio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <span>Shubham Khalkho</span>
+            </div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#skills">Skills</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="about" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Hi, I'm Shubham Khalkho</h1>
+                <p class="hero-subtitle">Full Stack Developer & Tech Enthusiast</p>
+                <p class="hero-description">
+                    Senior at Arizona State University with a passion for building innovative projects 
+                    and continuous learning. I specialize in full-stack development and machine learning.
+                </p>
+                <div class="hero-links">
+                    <a href="https://github.com/Shubhoom123" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="https://www.linkedin.com/in/shubham-khalkho-4997b2212/" target="_blank" class="btn btn-secondary">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="mailto:khalkhoshubham03@gmail.com" class="btn btn-secondary">
+                        <i class="fas fa-envelope"></i> Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            
+            <!-- Machine Learning Projects -->
+            <div class="projects-category">
+                <h3 class="category-title">
+                    <i class="fas fa-brain"></i> Machine Learning Projects
+                </h3>
+                
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="badge badge-beginner">Beginner</span>
+                            <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Heart_Disease" target="_blank" class="project-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                        <h4>Heart Disease Prediction</h4>
+                        <p>Predicts the likelihood of heart disease using clinical indicators such as age, cholesterol, blood pressure, and heart rate.</p>
+                        <div class="tech-stack">
+                            <span>Python</span>
+                            <span>Pandas</span>
+                            <span>Scikit-learn</span>
+                            <span>Logistic Regression</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="badge badge-beginner">Beginner</span>
+                            <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Movie_Rating" target="_blank" class="project-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                        <h4>Movie Ratings Analysis</h4>
+                        <p>Analyzes viewer rating patterns and builds predictive models using neural networks with PCA and K-Means clustering.</p>
+                        <div class="tech-stack">
+                            <span>Python</span>
+                            <span>TensorFlow</span>
+                            <span>Keras</span>
+                            <span>PCA</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="badge badge-beginner">Beginner</span>
+                            <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Premier_League" target="_blank" class="project-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                        <h4>Premier League Analysis</h4>
+                        <p>Explores English Premier League team performances, focusing on wins, home vs. away results, and statistical insights.</p>
+                        <div class="tech-stack">
+                            <span>R</span>
+                            <span>Python</span>
+                            <span>Data Viz</span>
+                            <span>Sports Analytics</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="badge badge-intermediate">Intermediate</span>
+                        </div>
+                        <h4>Self-Correcting RAG System</h4>
+                        <p>A locally-deployed RAG system using Ollama (Llama 3.2), LangChain, LangGraph, and ChromaDB with a cyclic agentic workflow that auto-grades retrieval quality and falls back to DuckDuckGo web search when relevance drops below 0.7 — all at zero API cost using HuggingFace embeddings.</p>
+                        <div class="tech-stack">
+                            <span>Python</span>
+                            <span>LangChain</span>
+                            <span>LangGraph</span>
+                            <span>ChromaDB</span>
+                            <span>Ollama</span>
+                            <span>HuggingFace</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Stack Projects -->
+            <div class="projects-category">
+                <h3 class="category-title">
+                    <i class="fas fa-layer-group"></i> Full Stack Projects
+                </h3>
+                
+                <div class="projects-grid">
+                    <div class="project-card highlight">
+                        <div class="project-header">
+                            <span class="badge badge-live">Live</span>
+                            <a href="https://collaborative-coding-editor-frontend.onrender.com" target="_blank" class="project-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        <h4>Real-Time Collaborative Code Editor</h4>
+                        <p>A real-time collaborative code editor with live synchronization, syntax highlighting for 8+ languages, integrated chat, and WebSocket technology.</p>
+                        <div class="tech-stack">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>Socket.io</span>
+                            <span>Monaco Editor</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">Technical Skills</h2>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <div class="skill-category-header">
+                        <i class="fas fa-palette"></i>
+                        <h3>Frontend</h3>
+                    </div>
+                    <div class="skill-items">
+                        <span class="skill-item">JavaScript</span>
+                        <span class="skill-item">TypeScript</span>
+                        <span class="skill-item">React</span>
+                        <span class="skill-item">Angular</span>
+                        <span class="skill-item">Next.js</span>
+                        <span class="skill-item">HTML & CSS</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-category-header">
+                        <i class="fas fa-server"></i>
+                        <h3>Backend</h3>
+                    </div>
+                    <div class="skill-items">
+                        <span class="skill-item">Node.js</span>
+                        <span class="skill-item">Express</span>
+                        <span class="skill-item">Python</span>
+                        <span class="skill-item">Django</span>
+                        <span class="skill-item">GraphQL</span>
+                        <span class="skill-item">RESTful APIs</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-category-header">
+                        <i class="fas fa-database"></i>
+                        <h3>Database</h3>
+                    </div>
+                    <div class="skill-items">
+                        <span class="skill-item">MongoDB</span>
+                        <span class="skill-item">PostgreSQL</span>
+                        <span class="skill-item">MySQL</span>
+                        <span class="skill-item">Redis</span>
+                        <span class="skill-item">Firebase</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-category-header">
+                        <i class="fas fa-tools"></i>
+                        <h3>Tools & DevOps</h3>
+                    </div>
+                    <div class="skill-items">
+                        <span class="skill-item">Git & GitHub</span>
+                        <span class="skill-item">Docker</span>
+                        <span class="skill-item">AWS</span>
+                        <span class="skill-item">Jenkins</span>
+                        <span class="skill-item">Jest & Pytest</span>
+                        <span class="skill-item">Agile/Scrum</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="contact-intro">I'm always open to new opportunities and collaborations.</p>
+            
+            <div class="contact-grid">
+                <a href="mailto:khalkhoshubham03@gmail.com" class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h4>Email</h4>
+                    <p>khalkhoshubham03@gmail.com</p>
+                </a>
+                
+                <a href="https://github.com/Shubhoom123" target="_blank" class="contact-card">
+                    <i class="fab fa-github"></i>
+                    <h4>GitHub</h4>
+                    <p>@Shubhoom123</p>
+                </a>
+                
+                <a href="https://www.linkedin.com/in/shubham-khalkho-4997b2212/" target="_blank" class="contact-card">
+                    <i class="fab fa-linkedin"></i>
+                    <h4>LinkedIn</h4>
+                    <p>Shubham Khalkho</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Shubham Khalkho. Built with passion.</p>
+        </div>
+    </footer>
+
+    <script src="portfolio.js"></script>
+</body>
+</html>
