@@ -354,9 +354,11 @@ body::before {
     position: relative;
     overflow: hidden;
     border-radius: 16px;
+    background: #000000;
 }
 
-.project-image img {
+.project-image img,
+.project-image video {
     width: 100%;
     height: 500px;
     object-fit: cover;
@@ -366,9 +368,15 @@ body::before {
     transition: all var(--transition-smooth);
 }
 
-.project-image:hover img {
+.project-image:hover img,
+.project-image:hover video {
     box-shadow: 0 0 60px rgba(15, 191, 63, 0.3);
     transform: scale(1.02);
+}
+
+/* Video-specific styling */
+.project-image video {
+    border-radius: 16px;
 }
 
 .project-content {
