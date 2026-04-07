@@ -1,660 +1,369 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
+// ========================================
+// Animated Background - Floating Particles
+// ========================================
+const createParticles = () => {
+    const canvas = document.createElement('canvas');
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = '0';
+    document.body.insertBefore(canvas, document.body.firstChild);
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    const particleCount = 40;
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.4;
+            this.speedY = (Math.random() - 0.5) * 0.4;
+            this.opacity = Math.random() * 0.5 + 0.2;
+            this.color = Math.random() > 0.5 ? '#0FBF3F' : '#5FED83';
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            if (this.x > canvas.width) this.x = 0;
+            if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            if (this.y < 0) this.y = canvas.height;
+        }
+
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+
+    const animate = () => {
+        // Clear with pure black background
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1;
+
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+
+        // Draw connecting lines
+        particles.forEach((particle, index) => {
+            for (let i = index + 1; i < particles.length; i++) {
+                const dx = particles[i].x - particle.x;
+                const dy = particles[i].y - particle.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 150) {
+                    ctx.strokeStyle = '#0FBF3F';
+                    ctx.globalAlpha = (1 - distance / 150) * 0.25;
+                    ctx.lineWidth = 1.2;
+                    ctx.beginPath();
+                    ctx.moveTo(particle.x, particle.y);
+                    ctx.lineTo(particles[i].x, particles[i].y);
+                    ctx.stroke();
+                }
+            }
+        });
+
+        requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    });
+};
+
+// Initialize particles on load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createParticles);
+} else {
+    createParticles();
 }
 
-:root {
-    /* GitHub Color Palette */
-    --github-green: #0FBF3F;
-    --green-1: #BFFD1;
-    --green-2: #8CF2A6;
-    --green-3: #5FED83;
-    --green-4: #0FBF3E;
-    --green-5: #08872B;
-    --green-6: #0A241B;
+// ========================================
+// Navbar Scroll Effect
+// ========================================
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// ========================================
+// Smooth Scroll for Navigation Links
+// ========================================
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href !== '#') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+    });
+});
+
+// ========================================
+// Intersection Observer for Scroll Animations
+// ========================================
+const observerOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 100);
+            
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+// Observe project items and skill blocks
+document.querySelectorAll('.project-item, .skill-block, .contact-item').forEach((el) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(40px)';
+    el.style.transition = 'opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+    observer.observe(el);
+});
+
+// ========================================
+// Active Navigation Link Highlighting
+// ========================================
+const highlightActiveLink = () => {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-links a');
     
-    --gray-1: #F2F5F3;
-    --gray-2: #E4EBE6;
-    --gray-3: #B6BFB8;
-    --gray-4: #909692;
-    --gray-5: #232925;
-    --gray-6: #101411;
+    window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= sectionTop - 300) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.style.color = '';
+            if (link.getAttribute('href').slice(1) === current) {
+                link.style.color = 'var(--github-green)';
+                link.style.textShadow = '0 0 10px rgba(15, 191, 63, 0.5)';
+            } else {
+                link.style.textShadow = 'none';
+            }
+        });
+    });
+};
+
+highlightActiveLink();
+
+// ========================================
+// Smooth Page Load Animation
+// ========================================
+window.addEventListener('load', () => {
+    document.body.style.opacity = '1';
     
-    --white: #ffffff;
-    --black: #101411;
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent) {
+        heroContent.style.animation = 'fadeInUp 1s ease 0.3s both';
+    }
+});
+
+// ========================================
+// Parallax Effect for Hero Section
+// ========================================
+const addParallaxEffect = () => {
+    const heroSection = document.querySelector('.hero');
+    if (!heroSection) return;
     
-    /* Spacing */
-    --container-width: 1200px;
-    --section-padding: 100px 20px;
-}
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+        
+        if (scrollPosition < window.innerHeight) {
+            heroSection.style.backgroundPosition = `0 ${scrollPosition * 0.3}px`;
+        }
+    });
+};
 
-html {
-    scroll-behavior: smooth;
-}
+addParallaxEffect();
 
-body {
-    font-family: 'Space Mono', monospace;
-    background: var(--white);
-    color: var(--gray-5);
-    line-height: 1.6;
-    overflow-x: hidden;
-}
+// ========================================
+// Text Reveal Animation on Scroll
+// ========================================
+const addTextRevealAnimation = () => {
+    const titles = document.querySelectorAll('.hero-title, .projects-header h2, .skills-header h2, .contact h2, .project-content h3');
+    
+    titles.forEach(title => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease 0.2s both';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        observer.observe(title);
+    });
+};
 
-.container {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 0 20px;
-}
+addTextRevealAnimation();
 
-/* ========================================
-   Navigation
-   ======================================== */
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 2px solid var(--gray-1);
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-
-.navbar.scrolled {
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-}
-
-.nav-content {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.2rem;
-    color: var(--gray-5);
-}
-
-.logo i {
-    color: var(--github-green);
-    font-size: 1.5rem;
-}
-
-.nav-links {
-    display: flex;
-    gap: 40px;
-}
-
-.nav-links a {
-    color: var(--gray-5);
-    text-decoration: none;
-    font-weight: 600;
-    position: relative;
-    transition: color 0.3s ease;
-}
-
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--github-green);
-    transition: width 0.3s ease;
-}
-
-.nav-links a:hover {
-    color: var(--github-green);
-}
-
-.nav-links a:hover::after {
-    width: 100%;
-}
-
-/* ========================================
-   Hero Section
-   ======================================== */
-.hero {
-    padding: 180px 20px 120px;
-    background: linear-gradient(135deg, var(--gray-1) 0%, var(--white) 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(15, 191, 63, 0.1) 0%, transparent 70%);
-    animation: float 20s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(-50px, 50px) rotate(180deg); }
-}
-
-.hero-content {
-    max-width: 800px;
-    animation: fadeInUp 1s ease;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+// ========================================
+// Keyboard Navigation Support
+// ========================================
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        console.log('Escape key pressed');
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+});
+
+// ========================================
+// Accessibility: Reduced Motion Support
+// ========================================
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (prefersReducedMotion) {
+    document.documentElement.style.setProperty('--transition-smooth', '0s');
+    document.documentElement.style.setProperty('--transition-fast', '0s');
+    
+    document.querySelectorAll('*').forEach(el => {
+        el.style.animation = 'none !important';
+        el.style.transition = 'none !important';
+    });
 }
 
-.hero h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: 4rem;
-    font-weight: 800;
-    color: var(--gray-5);
-    margin-bottom: 20px;
-    line-height: 1.1;
-    letter-spacing: -2px;
-}
-
-.hero-subtitle {
-    font-size: 1.5rem;
-    color: var(--github-green);
-    margin-bottom: 20px;
-    font-weight: 600;
-}
-
-.hero-description {
-    font-size: 1.1rem;
-    color: var(--gray-4);
-    margin-bottom: 40px;
-    line-height: 1.8;
-}
-
-.hero-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 28px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.btn-primary {
-    background: var(--github-green);
-    color: var(--white);
-    border-color: var(--github-green);
-}
-
-.btn-primary:hover {
-    background: var(--green-5);
-    border-color: var(--green-5);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(15, 191, 63, 0.3);
-}
-
-.btn-secondary {
-    background: transparent;
-    color: var(--gray-5);
-    border-color: var(--gray-3);
-}
-
-.btn-secondary:hover {
-    background: var(--gray-1);
-    border-color: var(--github-green);
-    color: var(--github-green);
-}
-
-/* ========================================
-   Sections
-   ======================================== */
-.projects,
-.skills,
-.contact {
-    padding: var(--section-padding);
-}
-
-.section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 3rem;
-    font-weight: 800;
-    color: var(--gray-5);
-    margin-bottom: 60px;
-    position: relative;
-    display: inline-block;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 60px;
-    height: 4px;
-    background: var(--github-green);
-}
-
-/* ========================================
-   Projects Section
-   ======================================== */
-.projects {
-    background: var(--white);
-}
-
-.projects-category {
-    margin-bottom: 80px;
-}
-
-.category-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--gray-5);
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.category-title i {
-    color: var(--github-green);
-}
-
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-}
-
-.project-card {
-    background: var(--white);
-    border: 2px solid var(--gray-1);
-    border-radius: 12px;
-    padding: 30px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.project-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--github-green), var(--green-3));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-}
-
-.project-card:hover::before {
-    transform: scaleX(1);
-}
-
-.project-card:hover {
-    border-color: var(--github-green);
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(15, 191, 63, 0.15);
-}
-
-.project-card.highlight {
-    border-color: var(--github-green);
-    background: linear-gradient(135deg, rgba(15, 191, 63, 0.03) 0%, var(--white) 100%);
-}
-
-.project-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.badge {
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 6px 12px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.badge-beginner {
-    background: rgba(15, 191, 63, 0.1);
-    color: var(--green-5);
-    border: 1px solid var(--green-3);
-}
-
-.badge-live {
-    background: rgba(15, 191, 63, 0.2);
-    color: var(--green-5);
-    border: 1px solid var(--github-green);
-}
-
-.badge-wip {
-    background: rgba(144, 150, 146, 0.1);
-    color: var(--gray-4);
-    border: 1px solid var(--gray-3);
-}
-
-.project-link {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--gray-2);
-    border-radius: 50%;
-    color: var(--gray-5);
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.project-link:hover {
-    background: var(--github-green);
-    border-color: var(--github-green);
-    color: var(--white);
-    transform: rotate(360deg);
-}
-
-.project-card h4 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--gray-5);
-    margin-bottom: 15px;
-}
-
-.project-card p {
-    color: var(--gray-4);
-    margin-bottom: 20px;
-    line-height: 1.7;
-}
-
-.tech-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.tech-stack span {
-    font-size: 0.85rem;
-    padding: 6px 14px;
-    background: var(--gray-1);
-    color: var(--gray-5);
-    border-radius: 6px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.tech-stack span:hover {
-    background: var(--github-green);
-    color: var(--white);
-}
-
-/* ========================================
-   Skills Section
-   ======================================== */
-.skills {
-    background: var(--gray-1);
-}
-
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-}
-
-.skill-category {
-    background: var(--white);
-    border: 2px solid var(--gray-2);
-    border-radius: 12px;
-    padding: 30px;
-    transition: all 0.3s ease;
-}
-
-.skill-category:hover {
-    border-color: var(--github-green);
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(15, 191, 63, 0.1);
-}
-
-.skill-category-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.skill-category-header i {
-    font-size: 1.5rem;
-    color: var(--github-green);
-}
-
-.skill-category-header h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--gray-5);
-}
-
-.skill-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.skill-item {
-    padding: 8px 16px;
-    background: var(--gray-1);
-    color: var(--gray-5);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    cursor: default;
-}
-
-.skill-item:hover {
-    background: var(--github-green);
-    color: var(--white);
-    transform: translateY(-2px);
-}
-
-/* ========================================
-   Contact Section
-   ======================================== */
-.contact {
-    background: var(--white);
-    text-align: center;
-}
-
-.contact-intro {
-    font-size: 1.2rem;
-    color: var(--gray-4);
-    margin-bottom: 50px;
-}
-
-.contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.contact-card {
-    background: var(--white);
-    border: 2px solid var(--gray-1);
-    border-radius: 12px;
-    padding: 40px 30px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-.contact-card:hover {
-    border-color: var(--github-green);
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(15, 191, 63, 0.15);
-}
-
-.contact-card i {
-    font-size: 3rem;
-    color: var(--github-green);
-    transition: all 0.3s ease;
-}
-
-.contact-card:hover i {
-    transform: scale(1.1);
-}
-
-.contact-card h4 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--gray-5);
-}
-
-.contact-card p {
-    color: var(--gray-4);
-    word-break: break-word;
-}
-
-/* ========================================
-   Footer
-   ======================================== */
-.footer {
-    background: var(--gray-5);
-    color: var(--white);
-    text-align: center;
-    padding: 30px 20px;
-}
-
-.footer p {
-    color: var(--gray-2);
-}
-
-/* ========================================
-   Responsive Design
-   ======================================== */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-
-    .section-title {
-        font-size: 2rem;
-    }
-
-    .nav-links {
-        gap: 20px;
-    }
-
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .skills-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .contact-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .hero {
-        padding: 140px 20px 80px;
-    }
-
-    .nav-links {
-        display: none;
-    }
-
-    .hero-links {
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-/* ========================================
-   Animations
-   ======================================== */
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.fade-in {
-    animation: fadeInUp 0.8s ease;
-}
-
-.slide-left {
-    animation: slideInLeft 0.8s ease;
-}
-
-.slide-right {
-    animation: slideInRight 0.8s ease;
-}
+// ========================================
+// Cursor Effects
+// ========================================
+const addCursorEffect = () => {
+    const interactiveElements = document.querySelectorAll('a, button, .cta-button, .project-link, .skill-list span, .contact-item');
+    
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', function() {
+            this.style.cursor = 'pointer';
+        });
+    });
+};
+
+addCursorEffect();
+
+// ========================================
+// Performance Optimization: Debounce Scroll
+// ========================================
+const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
+const debouncedScroll = debounce(() => {
+    // Scroll-based logic here
+}, 100);
+
+window.addEventListener('scroll', debouncedScroll);
+
+// ========================================
+// Scroll Progress Indicator
+// ========================================
+const createScrollProgress = () => {
+    const progressBar = document.createElement('div');
+    progressBar.style.position = 'fixed';
+    progressBar.style.top = '0';
+    progressBar.style.left = '0';
+    progressBar.style.height = '3px';
+    progressBar.style.background = 'linear-gradient(90deg, #0FBF3F, #5FED83)';
+    progressBar.style.width = '0%';
+    progressBar.style.zIndex = '999';
+    progressBar.style.transition = 'width 0.1s ease';
+    progressBar.style.boxShadow = '0 0 10px rgba(15, 191, 63, 0.5)';
+    document.body.appendChild(progressBar);
+    
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        progressBar.style.width = scrollPercent + '%';
+    });
+};
+
+createScrollProgress();
+
+// ========================================
+// Lazy Load Animation for Images
+// ========================================
+const observeImages = () => {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.6s ease';
+                img.onload = () => {
+                    img.style.opacity = '1';
+                };
+                observer.unobserve(img);
+            }
+        });
+    });
+    
+    document.querySelectorAll('img').forEach(img => {
+        imageObserver.observe(img);
+    });
+};
+
+observeImages();
+
+// ========================================
+// Smooth Page Load
+// ========================================
+document.body.style.opacity = '0';
+window.addEventListener('load', () => {
+    document.body.style.transition = 'opacity 0.6s ease';
+    document.body.style.opacity = '1';
+});
