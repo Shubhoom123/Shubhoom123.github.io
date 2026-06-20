@@ -156,13 +156,207 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe project items and skill blocks
-document.querySelectorAll('.project-item, .skill-block, .contact-item').forEach((el) => {
+// Observe skill blocks and contact items (project items live inside
+// collapsible folders, so they're animated separately below)
+document.querySelectorAll('.skill-category, .contact-item').forEach((el) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(40px)';
     el.style.transition = 'opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
     observer.observe(el);
 });
+
+// Observe folder cards themselves with the same fade-in
+document.querySelectorAll('.folder').forEach((el) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(40px)';
+    el.style.transition = 'opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+    observer.observe(el);
+});
+
+// ========================================
+// Featured Projects: Folder Expand/Collapse
+// ========================================
+// Uses a JS-measured max-height (rather than a pure CSS grid-rows trick)
+// so collapsed folders fully hide their contents in every browser, with
+// no partial bleed-through of tags/badges.
+const initProjectFolders = () => {
+    const folders = document.querySelectorAll('.folder');
+
+    const simpleDebounce = (fn, wait) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn(...args), wait);
+        };
+    };
+
+    const setOpenHeight = (folder) => {
+        const content = folder.querySelector('.folder-content');
+        if (content) content.style.maxHeight = content.scrollHeight + 'px';
+    };
+
+    const openFolder = (folder) => {
+        const header = folder.querySelector('.folder-header');
+        folder.classList.add('open');
+        if (header) header.setAttribute('aria-expanded', 'true');
+        setOpenHeight(folder);
+    };
+
+    const closeFolder = (folder) => {
+        const content = folder.querySelector('.folder-content');
+        const header = folder.querySelector('.folder-header');
+        if (content) content.style.maxHeight = '0px';
+        folder.classList.remove('open');
+        if (header) header.setAttribute('aria-expanded', 'false');
+    };
+
+    folders.forEach((folder) => {
+        const header = folder.querySelector('.folder-header');
+        if (!header) return;
+
+        header.addEventListener('click', () => {
+            const isOpen = folder.classList.contains('open');
+
+            // Only one folder open at a time
+            folders.forEach((other) => {
+                if (other !== folder && other.classList.contains('open')) {
+                    closeFolder(other);
+                }
+            });
+
+            if (isOpen) {
+                closeFolder(folder);
+            } else {
+                openFolder(folder);
+            }
+        });
+
+        // Keyboard support (Enter/Space) for accessibility
+        header.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                header.click();
+            }
+        });
+
+        // Videos may report their layout box late; recalc height once
+        // metadata loads so playing content never gets clipped.
+        folder.querySelectorAll('video').forEach((video) => {
+            video.addEventListener('loadedmetadata', () => {
+                if (folder.classList.contains('open')) setOpenHeight(folder);
+            });
+        });
+    });
+
+    // Replace the generous CSS fallback height on the default-open folder
+    // with its exact measured height once layout has settled.
+    const defaultOpen = document.querySelector('.folder.open');
+    if (defaultOpen) {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => setOpenHeight(defaultOpen));
+        });
+    }
+
+    // Recompute the open folder's height if the viewport is resized
+    // (text reflow changes content height on smaller screens).
+    window.addEventListener('resize', simpleDebounce(() => {
+        document.querySelectorAll('.folder.open').forEach(setOpenHeight);
+    }, 150));
+};
+
+initProjectFolders();
+
+// ========================================
+// Project Media Lightbox (click to enlarge)
+// ========================================
+// Screen-recorded demo videos are too detailed to read at thumbnail
+// size; clicking one opens a much larger view so every UI detail is
+// actually legible.
+const initProjectLightbox = () => {
+    const mediaBoxes = document.querySelectorAll('.project-image');
+    if (!mediaBoxes.length) return;
+
+    // Build the lightbox shell once and reuse it for every project.
+    const overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.innerHTML = `
+        <div class="lightbox-content">
+            <button class="lightbox-close" aria-label="Close"><i class="fas fa-times"></i></button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const content = overlay.querySelector('.lightbox-content');
+    const closeBtn = overlay.querySelector('.lightbox-close');
+    let activeMedia = null;
+
+    const closeLightbox = () => {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        if (activeMedia && activeMedia.tagName === 'VIDEO') {
+            activeMedia.pause();
+        }
+        if (activeMedia) {
+            activeMedia.remove();
+            activeMedia = null;
+        }
+    };
+
+    const openLightbox = (box) => {
+        // Pull the same source the thumbnail uses (video > source, or img)
+        const sourceVideo = box.querySelector('video');
+        const sourceImg = box.querySelector('img');
+
+        let el;
+        if (sourceVideo) {
+            const src = sourceVideo.querySelector('source');
+            el = document.createElement('video');
+            el.autoplay = true;
+            el.muted = true;
+            el.loop = true;
+            el.playsInline = true;
+            el.controls = true;
+            const s = document.createElement('source');
+            s.src = src ? src.src : '';
+            s.type = 'video/mp4';
+            el.appendChild(s);
+        } else if (sourceImg) {
+            el = document.createElement('img');
+            el.src = sourceImg.src;
+            el.alt = sourceImg.alt || '';
+        } else {
+            return;
+        }
+
+        // Remove any previous media, then insert the new one before the close button
+        if (activeMedia) activeMedia.remove();
+        activeMedia = el;
+        content.insertBefore(el, closeBtn);
+
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    mediaBoxes.forEach((box) => {
+        // Hover hint so the click-to-enlarge affordance is discoverable
+        const hint = document.createElement('div');
+        hint.className = 'project-zoom-hint';
+        hint.innerHTML = '<i class="fas fa-expand"></i>';
+        box.appendChild(hint);
+
+        box.addEventListener('click', () => openLightbox(box));
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('active')) closeLightbox();
+    });
+};
+
+initProjectLightbox();
 
 // ========================================
 // Active Navigation Link Highlighting

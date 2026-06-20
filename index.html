@@ -52,168 +52,207 @@
     <section id="projects" class="projects">
         <div class="projects-header">
             <h2>Featured Projects</h2>
-            <p>A selection of my recent work across machine learning and full-stack development.</p>
+            <p>A selection of my recent work across machine learning and full-stack development. Click a folder to open it.</p>
         </div>
 
-        <!-- Project 1 -->
-        <div class="project-item">
-            <div class="project-image">
-                <!-- OPTION 1: Use a VIDEO showcase (recommended) -->
-                <!-- Replace 'YOUR_VIDEO_URL_HERE' with the path to your MP4 file -->
-                <!-- Example: src="/videos/collaborative-editor-demo.mp4" or src="https://your-domain.com/videos/demo.mp4" -->
-                <video autoplay muted loop playsinline>
-                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
-                    <!-- Fallback image if video doesn't load -->
-                    <img src="https://via.placeholder.com/900x600?text=Real-Time+Collaborative+Code+Editor" alt="Collaborative Code Editor">
-                </video>
-                
-                <!-- OPTION 2: Use a static IMAGE (uncomment if you prefer images) -->
-                <!-- <img src="https://via.placeholder.com/900x600?text=Real-Time+Collaborative+Code+Editor" alt="Collaborative Code Editor"> -->
-            </div>
-            <div class="project-content">
-                <div class="project-meta">
-                    <span class="project-tag">Full Stack</span>
-                    <span class="project-status">Live</span>
-                </div>
-                <h3>Real-Time Collaborative Code Editor</h3>
-                <p>A sophisticated real-time collaborative code editor with live synchronization, syntax highlighting for 8+ languages, integrated chat, and WebSocket technology. Multiple users can code together seamlessly with instant updates and a clean, intuitive interface.</p>
-                <div class="project-tech">
-                    <span>React</span>
-                    <span>Node.js</span>
-                    <span>Socket.io</span>
-                    <span>Monaco Editor</span>
-                </div>
-                <a href="https://collaborative-coding-editor-frontend.onrender.com" target="_blank" rel="noopener noreferrer" class="project-link">View Project →</a>
-            </div>
-        </div>
+        <div class="folders-container">
 
-        <!-- Project 2 -->
-        <div class="project-item reverse">
-            <div class="project-image">
-                <!-- OPTION 1: Use a VIDEO showcase (recommended) -->
-                <!-- Replace 'YOUR_VIDEO_URL_HERE' with the path to your MP4 file -->
-                <!-- Example: src="/videos/rag-system-demo.mp4" or src="https://your-domain.com/videos/demo.mp4" -->
-                <video autoplay muted loop playsinline>
-                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
-                    <!-- Fallback image if video doesn't load -->
-                    <img src="https://via.placeholder.com/900x600?text=Self-Correcting+RAG+System" alt="RAG System">
-                </video>
-                
-                <!-- OPTION 2: Use a static IMAGE (uncomment if you prefer images) -->
-                <!-- <img src="https://via.placeholder.com/900x600?text=Self-Correcting+RAG+System" alt="RAG System"> -->
-            </div>
-            <div class="project-content">
-                <div class="project-meta">
-                    <span class="project-tag">Machine Learning</span>
-                    <span class="project-status">Advanced</span>
-                </div>
-                <h3>Self-Correcting RAG System</h3>
-                <p>A locally-deployed RAG system using Ollama (Llama 3.2), LangChain, LangGraph, and ChromaDB with a cyclic agentic workflow that auto-grades retrieval quality and falls back to DuckDuckGo web search when relevance drops below 0.7 — all at zero API cost using HuggingFace embeddings.</p>
-                <div class="project-tech">
-                    <span>Python</span>
-                    <span>LangChain</span>
-                    <span>LangGraph</span>
-                    <span>ChromaDB</span>
-                    <span>Ollama</span>
-                </div>
-                <a href="#" class="project-link">View Project →</a>
-            </div>
-        </div>
+            <!-- Folder 1: Full-Stack Applications -->
+            <div class="folder open" data-folder="1">
+                <button class="folder-header" aria-expanded="true">
+                    <span class="folder-icon-wrap">
+                        <i class="fas fa-folder folder-icon-closed"></i>
+                        <i class="fas fa-folder-open folder-icon-open"></i>
+                    </span>
+                    <span class="folder-info">
+                        <span class="folder-name">Full-Stack Applications</span>
+                        <span class="folder-count">1 project</span>
+                    </span>
+                    <i class="fas fa-chevron-down folder-toggle-icon"></i>
+                </button>
 
-        <!-- Project 3 -->
-        <div class="project-item">
-            <div class="project-image">
-                <!-- OPTION 1: Use a VIDEO showcase (recommended) -->
-                <!-- Replace 'YOUR_VIDEO_URL_HERE' with the path to your MP4 file -->
-                <!-- Example: src="/videos/heart-disease-demo.mp4" or src="https://your-domain.com/videos/demo.mp4" -->
-                <video autoplay muted loop playsinline>
-                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
-                    <!-- Fallback image if video doesn't load -->
-                    <img src="https://via.placeholder.com/900x600?text=Heart+Disease+Prediction" alt="Heart Disease Prediction">
-                </video>
-                
-                <!-- OPTION 2: Use a static IMAGE (uncomment if you prefer images) -->
-                <!-- <img src="https://via.placeholder.com/900x600?text=Heart+Disease+Prediction" alt="Heart Disease Prediction"> -->
-            </div>
-            <div class="project-content">
-                <div class="project-meta">
-                    <span class="project-tag">Machine Learning</span>
-                    <span class="project-status">Beginner</span>
-                </div>
-                <h3>Heart Disease Prediction</h3>
-                <p>Predicts the likelihood of heart disease using clinical indicators such as age, cholesterol, blood pressure, and heart rate. Implements logistic regression with advanced data preprocessing and feature scaling techniques.</p>
-                <div class="project-tech">
-                    <span>Python</span>
-                    <span>Pandas</span>
-                    <span>Scikit-learn</span>
-                    <span>Logistic Regression</span>
-                </div>
-                <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Heart_Disease" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
-            </div>
-        </div>
+                <div class="folder-content">
+                    <div class="folder-projects">
 
-        <!-- Project 4 -->
-        <div class="project-item reverse">
-            <div class="project-image">
-                <!-- OPTION 1: Use a VIDEO showcase (recommended) -->
-                <!-- Replace 'YOUR_VIDEO_URL_HERE' with the path to your MP4 file -->
-                <!-- Example: src="/videos/movie-ratings-demo.mp4" or src="https://your-domain.com/videos/demo.mp4" -->
-                <video autoplay muted loop playsinline>
-                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
-                    <!-- Fallback image if video doesn't load -->
-                    <img src="https://via.placeholder.com/900x600?text=Movie+Ratings+Analysis" alt="Movie Ratings Analysis">
-                </video>
-                
-                <!-- OPTION 2: Use a static IMAGE (uncomment if you prefer images) -->
-                <!-- <img src="https://via.placeholder.com/900x600?text=Movie+Ratings+Analysis" alt="Movie Ratings Analysis"> -->
-            </div>
-            <div class="project-content">
-                <div class="project-meta">
-                    <span class="project-tag">Machine Learning</span>
-                    <span class="project-status">Beginner</span>
-                </div>
-                <h3>Movie Ratings Analysis</h3>
-                <p>Analyzes viewer rating patterns and builds predictive models using neural networks with PCA and K-Means clustering. Explores dimensionality reduction and unsupervised learning techniques for data insights.</p>
-                <div class="project-tech">
-                    <span>Python</span>
-                    <span>TensorFlow</span>
-                    <span>Keras</span>
-                    <span>PCA</span>
-                </div>
-                <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Movie_Rating" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
-            </div>
-        </div>
+                        <!-- Project: Real-Time Collaborative Code Editor -->
+                        <div class="project-item">
+                            <div class="project-image">
+                                <video autoplay muted loop playsinline>
+                                    <source src="Gifs/Collab-Code-Working.mp4" type="video/mp4">
+                                    <img src="https://via.placeholder.com/900x600?text=Real-Time+Collaborative+Code+Editor" alt="Collaborative Code Editor">
+                                </video>
+                            </div>
+                            <div class="project-content">
+                                <div class="project-meta">
+                                    <span class="project-tag">Full Stack</span>
+                                    <span class="project-status">Live</span>
+                                </div>
+                                <h3>Real-Time Collaborative Code Editor</h3>
+                                <p>A sophisticated real-time collaborative code editor with live synchronization, syntax highlighting for 8+ languages, integrated chat, and WebSocket technology. Multiple users can code together seamlessly with instant updates and a clean, intuitive interface.</p>
+                                <div class="project-tech">
+                                    <span>React</span>
+                                    <span>Node.js</span>
+                                    <span>Socket.io</span>
+                                    <span>Monaco Editor</span>
+                                </div>
+                                <a href="https://collaborative-coding-editor-frontend.onrender.com" target="_blank" rel="noopener noreferrer" class="project-link">View Project →</a>
+                            </div>
+                        </div>
 
-        <!-- Project 5 -->
-        <div class="project-item">
-            <div class="project-image">
-                <!-- OPTION 1: Use a VIDEO showcase (recommended) -->
-                <!-- Replace 'YOUR_VIDEO_URL_HERE' with the path to your MP4 file -->
-                <!-- Example: src="/videos/premier-league-demo.mp4" or src="https://your-domain.com/videos/demo.mp4" -->
-                <video autoplay muted loop playsinline>
-                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
-                    <!-- Fallback image if video doesn't load -->
-                    <img src="https://via.placeholder.com/900x600?text=Premier+League+Analysis" alt="Premier League Analysis">
-                </video>
-                
-                <!-- OPTION 2: Use a static IMAGE (uncomment if you prefer images) -->
-                <!-- <img src="https://via.placeholder.com/900x600?text=Premier+League+Analysis" alt="Premier League Analysis"> -->
-            </div>
-            <div class="project-content">
-                <div class="project-meta">
-                    <span class="project-tag">Data Analytics</span>
-                    <span class="project-status">Beginner</span>
+                    </div>
                 </div>
-                <h3>Premier League Analysis</h3>
-                <p>Explores English Premier League team performances, focusing on wins, home vs. away results, and statistical insights. Utilizes advanced data visualization to uncover patterns in sports analytics.</p>
-                <div class="project-tech">
-                    <span>R</span>
-                    <span>Python</span>
-                    <span>Data Visualization</span>
-                    <span>Sports Analytics</span>
-                </div>
-                <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Premier_League" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
             </div>
+
+            <!-- Folder 2: AI & Machine Learning -->
+            <div class="folder" data-folder="2">
+                <button class="folder-header" aria-expanded="false">
+                    <span class="folder-icon-wrap">
+                        <i class="fas fa-folder folder-icon-closed"></i>
+                        <i class="fas fa-folder-open folder-icon-open"></i>
+                    </span>
+                    <span class="folder-info">
+                        <span class="folder-name">AI &amp; Machine Learning</span>
+                        <span class="folder-count">2 projects</span>
+                    </span>
+                    <i class="fas fa-chevron-down folder-toggle-icon"></i>
+                </button>
+
+                <div class="folder-content">
+                    <div class="folder-projects">
+
+                        <!-- Project: Self-Correcting RAG System -->
+                        <div class="project-item">
+                            <div class="project-image">
+                                <video autoplay muted loop playsinline>
+                                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
+                                    <img src="https://via.placeholder.com/900x600?text=Self-Correcting+RAG+System" alt="RAG System">
+                                </video>
+                            </div>
+                            <div class="project-content">
+                                <div class="project-meta">
+                                    <span class="project-tag">Machine Learning</span>
+                                    <span class="project-status">Advanced</span>
+                                </div>
+                                <h3>d-RAG-on</h3>
+                                <p>My FullStack AI Chatbot built from scratch using a <strong>Retrieval-Augmented Generation (RAG)</strong> pipeline orchestrated using <strong>LangGraph</strong>. It retrieves relevant documents from a <strong>Pinecone</strong> vector store. Then grades its relevance using <strong>Groq's llama-3.1-8b-instant model</strong>. If the retrieved context is not enough for it, it automatically falls back to live web search and scraping using <strong>Tavily</strong>. Users can also upload there own documents to extend the knowledge base of the system. The documents are also isolated per user using Pinecone namespaces. The Backend is built using <strong>Python(FASTAPI)</strong> and the Frontend is made using <strong>React</strong> deployed on Vercel.</p>
+                                <div class="project-tech">
+                                    <span>Python</span>
+                                    <span>JavaScript</span>
+                                    <span>HTML</span>
+                                    <span>CSS</span>
+                                    <span>React</span>
+                                    <span>Vite</span>
+                                    <span>LangGraph</span>
+                                    <span>LangChain</span>
+                                    <span>Groq</span>
+                                    <span>Pinecone</span>
+                                    <span>Tavily</span>
+                                    <span>Docker</span>
+                                </div>
+                                <a href="#" class="project-link">View Project →</a>
+                            </div>
+                        </div>
+
+                        <!-- Project: Heart Disease Prediction -->
+                        <div class="project-item reverse">
+                            <div class="project-image">
+                                <video autoplay muted loop playsinline>
+                                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
+                                    <img src="https://via.placeholder.com/900x600?text=Heart+Disease+Prediction" alt="Heart Disease Prediction">
+                                </video>
+                            </div>
+                            <div class="project-content">
+                                <div class="project-meta">
+                                    <span class="project-tag">Machine Learning</span>
+                                    <span class="project-status">Beginner</span>
+                                </div>
+                                <h3>Heart Disease Prediction</h3>
+                                <p>Predicts the likelihood of heart disease using clinical indicators such as age, cholesterol, blood pressure, and heart rate. Implements logistic regression with advanced data preprocessing and feature scaling techniques.</p>
+                                <div class="project-tech">
+                                    <span>Python</span>
+                                    <span>Pandas</span>
+                                    <span>Scikit-learn</span>
+                                    <span>Logistic Regression</span>
+                                </div>
+                                <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Heart_Disease" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Folder 3: Data Science & Analytics -->
+            <div class="folder" data-folder="3">
+                <button class="folder-header" aria-expanded="false">
+                    <span class="folder-icon-wrap">
+                        <i class="fas fa-folder folder-icon-closed"></i>
+                        <i class="fas fa-folder-open folder-icon-open"></i>
+                    </span>
+                    <span class="folder-info">
+                        <span class="folder-name">Data Science &amp; Analytics</span>
+                        <span class="folder-count">2 projects</span>
+                    </span>
+                    <i class="fas fa-chevron-down folder-toggle-icon"></i>
+                </button>
+
+                <div class="folder-content">
+                    <div class="folder-projects">
+
+                        <!-- Project: Movie Ratings Analysis -->
+                        <div class="project-item">
+                            <div class="project-image">
+                                <video autoplay muted loop playsinline>
+                                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
+                                    <img src="https://via.placeholder.com/900x600?text=Movie+Ratings+Analysis" alt="Movie Ratings Analysis">
+                                </video>
+                            </div>
+                            <div class="project-content">
+                                <div class="project-meta">
+                                    <span class="project-tag">Machine Learning</span>
+                                    <span class="project-status">Beginner</span>
+                                </div>
+                                <h3>Movie Ratings Analysis</h3>
+                                <p>Analyzes viewer rating patterns and builds predictive models using neural networks with PCA and K-Means clustering. Explores dimensionality reduction and unsupervised learning techniques for data insights.</p>
+                                <div class="project-tech">
+                                    <span>Python</span>
+                                    <span>TensorFlow</span>
+                                    <span>Keras</span>
+                                    <span>PCA</span>
+                                </div>
+                                <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Movie_Rating" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                            </div>
+                        </div>
+
+                        <!-- Project: Premier League Analysis -->
+                        <div class="project-item reverse">
+                            <div class="project-image">
+                                <video autoplay muted loop playsinline>
+                                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
+                                    <img src="https://via.placeholder.com/900x600?text=Premier+League+Analysis" alt="Premier League Analysis">
+                                </video>
+                            </div>
+                            <div class="project-content">
+                                <div class="project-meta">
+                                    <span class="project-tag">Data Analytics</span>
+                                    <span class="project-status">Beginner</span>
+                                </div>
+                                <h3>Premier League Analysis</h3>
+                                <p>Explores English Premier League team performances, focusing on wins, home vs. away results, and statistical insights. Utilizes advanced data visualization to uncover patterns in sports analytics.</p>
+                                <div class="project-tech">
+                                    <span>R</span>
+                                    <span>Python</span>
+                                    <span>Data Visualization</span>
+                                    <span>Sports Analytics</span>
+                                </div>
+                                <a href="https://github.com/Shubhoom123/ML_Projects/tree/main/Tier%20-%20Beginner/Premier_League" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -224,43 +263,133 @@
         </div>
         
         <div class="skills-grid">
-            <div class="skill-block">
-                <h3>Frontend</h3>
-                <div class="skill-list">
-                    <span>JavaScript</span>
-                    <span>TypeScript</span>
-                    <span>React</span>
-                    <span>Angular</span>
-                    <span>Next.js</span>
-                    <span>HTML & CSS</span>
+
+            <!-- Frontend -->
+            <div class="skill-category">
+                <h3 class="skill-category-title">Frontend</h3>
+                <div class="skill-subgrid">
+                    <div class="skill-block">
+                        <h4>Languages</h4>
+                        <div class="skill-list">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                            <span>TypeScript</span>
+                        </div>
+                    </div>
+                    <div class="skill-block">
+                        <h4>Technologies / Tools</h4>
+                        <div class="skill-list">
+                            <span>React</span>
+                            <span>Next.js</span>
+                            <span>Vue.js</span>
+                            <span>Angular</span>
+                            <span>Tailwind CSS</span>
+                            <span>Bootstrap</span>
+                            <span>Vite</span>
+                            <span>Axios</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="skill-block">
-                <h3>Backend</h3>
-                <div class="skill-list">
-                    <span>Node.js</span>
-                    <span>Express</span>
-                    <span>Python</span>
-                    <span>Django</span>
-                    <span>GraphQL</span>
-                    <span>RESTful APIs</span>
+            <!-- Backend -->
+            <div class="skill-category">
+                <h3 class="skill-category-title">Backend</h3>
+                <div class="skill-subgrid">
+                    <div class="skill-block">
+                        <h4>Languages</h4>
+                        <div class="skill-list">
+                            <span>Java</span>
+                            <span>C#</span>
+                            <span>Python</span>
+                            <span>Rust</span>
+                            <span>JavaScript</span>
+                            <span>TypeScript</span>
+                            <span>Go</span>
+                        </div>
+                    </div>
+                    <div class="skill-block">
+                        <h4>Technologies / Tools</h4>
+                        <div class="skill-list">
+                            <span>Spring Boot</span>
+                            <span>.NET</span>
+                            <span>Django</span>
+                            <span>Flask</span>
+                            <span>Axum</span>
+                            <span>Rocket</span>
+                            <span>Express</span>
+                            <span>NestJS</span>
+                            <span>Gin</span>
+                            <span>Echo</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="skill-block">
-                <h3>Database</h3>
-                <div class="skill-list">
-                    <span>MongoDB</span>
-                    <span>PostgreSQL</span>
-                    <span>MySQL</span>
-                    <span>Redis</span>
-                    <span>Firebase</span>
+            <!-- Database -->
+            <div class="skill-category">
+                <h3 class="skill-category-title">Database</h3>
+                <div class="skill-subgrid">
+                    <div class="skill-block">
+                        <h4>Languages</h4>
+                        <div class="skill-list">
+                            <span>SQL</span>
+                            <span>pgSQL</span>
+                            <span>T-SQL</span>
+                            <span>PL/SQL</span>
+                            <span>NoSQL</span>
+                        </div>
+                    </div>
+                    <div class="skill-block">
+                        <h4>Technologies / Tools</h4>
+                        <div class="skill-list">
+                            <span>DBeaver</span>
+                            <span>pgAdmin</span>
+                            <span>Azure</span>
+                            <span>SSMS</span>
+                            <span>TOAD (Oracle)</span>
+                            <span>MongoDB</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="skill-block">
-                <h3>Tools & DevOps</h3>
+            <!-- AI / ML -->
+            <div class="skill-category">
+                <h3 class="skill-category-title">AI / ML</h3>
+                <div class="skill-subgrid">
+                    <div class="skill-block">
+                        <h4>Languages</h4>
+                        <div class="skill-list">
+                            <span>Python</span>
+                            <span>CUDA</span>
+                            <span>C++</span>
+                            <span>R</span>
+                        </div>
+                    </div>
+                    <div class="skill-block">
+                        <h4>Technologies / Tools</h4>
+                        <div class="skill-list">
+                            <span>PyTorch</span>
+                            <span>Keras</span>
+                            <span>TensorFlow</span>
+                            <span>NVIDIA TensorRT</span>
+                            <span>NVIDIA cuDNN</span>
+                            <span>LangChain</span>
+                            <span>LangGraph</span>
+                            <span>Ollama</span>
+                            <span>ChromaDB</span>
+                            <span>Pinecone</span>
+                            <span>pgVector</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools & DevOps -->
+            <div class="skill-category skill-category--full">
+                <h3 class="skill-category-title">Tools & DevOps</h3>
                 <div class="skill-list">
                     <span>Git & GitHub</span>
                     <span>Docker</span>
@@ -270,6 +399,7 @@
                     <span>Agile/Scrum</span>
                 </div>
             </div>
+
         </div>
     </section>
 

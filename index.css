@@ -329,6 +329,142 @@ body::before {
     max-width: 600px;
 }
 
+/* ----------------------------------------
+   Folder Accordion
+   ---------------------------------------- */
+.folders-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.folder {
+    border: 1px solid rgba(15, 191, 63, 0.25);
+    border-radius: 16px;
+    background: rgba(20, 20, 20, 0.5);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.folder:hover {
+    border-color: rgba(15, 191, 63, 0.4);
+    box-shadow: 0 10px 40px rgba(15, 191, 63, 0.12);
+}
+
+.folder.open {
+    border-color: rgba(15, 191, 63, 0.45);
+    box-shadow: 0 10px 40px rgba(15, 191, 63, 0.15);
+}
+
+.folder-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 30px 36px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.folder-icon-wrap {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.folder-icon-wrap i {
+    position: absolute;
+    font-size: 1.9rem;
+    color: var(--github-green);
+    text-shadow: 0 0 15px rgba(15, 191, 63, 0.5);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.folder-icon-open {
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.folder-icon-closed {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.folder.open .folder-icon-open {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.folder.open .folder-icon-closed {
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.folder-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.folder-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.3px;
+}
+
+.folder-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.folder-toggle-icon {
+    color: var(--gray-400);
+    font-size: 1.1rem;
+    transition: transform var(--transition-smooth), color var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.folder.open .folder-toggle-icon {
+    transform: rotate(180deg);
+    color: var(--github-green);
+}
+
+.folder-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-smooth);
+}
+
+.folder.open .folder-content {
+    /* Generous fallback so content isn't clipped before JS measures the
+       exact height; JS overwrites this with a precise pixel value. */
+    max-height: 3000px;
+}
+
+.folder-projects {
+    overflow: hidden;
+    padding: 0 36px 50px;
+}
+
 .project-item {
     max-width: var(--container-width);
     margin: 0 auto 120px;
@@ -336,6 +472,14 @@ body::before {
     grid-template-columns: 1fr 1fr;
     gap: 80px;
     align-items: center;
+}
+
+.folder-projects .project-item {
+    margin-bottom: 90px;
+}
+
+.folder-projects .project-item:last-child {
+    margin-bottom: 0;
 }
 
 .project-item.reverse {
@@ -355,28 +499,152 @@ body::before {
     overflow: hidden;
     border-radius: 16px;
     background: #000000;
-}
-
-.project-image img,
-.project-image video {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-    display: block;
+    /* Wide, fixed-aspect box so the video/image renders large and
+       consistently, without ever cropping its content (see object-fit
+       below — "contain" letterboxes instead of cutting anything off). */
+    aspect-ratio: 16 / 9;
     border: 1px solid rgba(15, 191, 63, 0.25);
     box-shadow: 0 0 40px rgba(15, 191, 63, 0.15);
     transition: all var(--transition-smooth);
 }
 
+.project-image:hover {
+    box-shadow: 0 0 60px rgba(15, 191, 63, 0.3);
+}
+
+.project-image img,
+.project-image video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: transform var(--transition-smooth);
+}
+
 .project-image:hover img,
 .project-image:hover video {
-    box-shadow: 0 0 60px rgba(15, 191, 63, 0.3);
     transform: scale(1.02);
 }
 
 /* Video-specific styling */
 .project-image video {
     border-radius: 16px;
+}
+
+/* Click-to-enlarge hint (the inline thumbnail is too small to read fine
+   UI text in a screen-recorded demo, so clicking opens a large lightbox) */
+.project-image {
+    cursor: zoom-in;
+}
+
+.project-zoom-hint {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--white);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    pointer-events: none;
+}
+
+.project-zoom-hint i {
+    color: var(--github-green);
+    font-size: 2.2rem;
+}
+
+.project-image:hover .project-zoom-hint {
+    opacity: 1;
+}
+
+/* ========================================
+   Project Media Lightbox
+   ======================================== */
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-fast);
+}
+
+.lightbox-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-content {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-content img,
+.lightbox-content video {
+    width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid rgba(15, 191, 63, 0.35);
+    box-shadow: 0 0 60px rgba(15, 191, 63, 0.25);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 191, 63, 0.15);
+    border: 1px solid rgba(15, 191, 63, 0.4);
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.lightbox-close:hover {
+    background: rgba(15, 191, 63, 0.3);
+    color: var(--github-green);
+    transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+    .lightbox-overlay {
+        padding: 20px;
+    }
+
+    .lightbox-close {
+        top: -44px;
+        right: 0;
+        width: 36px;
+        height: 36px;
+    }
 }
 
 .project-content {
@@ -518,7 +786,8 @@ body::before {
     gap: 60px;
 }
 
-.skill-block {
+/* Big outer box for each skill category (Frontend, Backend, etc.) */
+.skill-category {
     padding: 40px;
     background: rgba(20, 20, 20, 0.5);
     border: 1px solid rgba(15, 191, 63, 0.25);
@@ -527,18 +796,51 @@ body::before {
     transition: all var(--transition-smooth);
 }
 
-.skill-block:hover {
+.skill-category:hover {
     border-color: rgba(15, 191, 63, 0.4);
     box-shadow: 0 20px 60px rgba(15, 191, 63, 0.15);
     transform: translateY(-8px);
 }
 
-.skill-block h3 {
+.skill-category-title {
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--white);
     margin-bottom: 25px;
     letter-spacing: -0.5px;
+}
+
+.skill-category--full {
+    grid-column: 1 / -1;
+}
+
+/* Two smaller boxes nested inside each category: Languages / Tools */
+.skill-subgrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.skill-block {
+    padding: 24px;
+    background: rgba(10, 10, 10, 0.6);
+    border: 1px solid rgba(15, 191, 63, 0.15);
+    border-radius: 12px;
+    transition: all var(--transition-fast);
+}
+
+.skill-block:hover {
+    border-color: rgba(15, 191, 63, 0.3);
+    background: rgba(10, 10, 10, 0.8);
+}
+
+.skill-block h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--github-green);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
 }
 
 .skill-list {
@@ -764,8 +1066,30 @@ body::before {
         margin-bottom: 80px;
     }
 
-    .project-image img {
-        height: 350px;
+    .folder-header {
+        padding: 24px 22px;
+        gap: 16px;
+    }
+
+    .folder-name {
+        font-size: 1.25rem;
+    }
+
+    .folder-icon-wrap {
+        width: 34px;
+        height: 34px;
+    }
+
+    .folder-icon-wrap i {
+        font-size: 1.5rem;
+    }
+
+    .folder-projects {
+        padding: 0 22px 36px;
+    }
+
+    .folder-projects .project-item {
+        margin-bottom: 60px;
     }
 
     .project-content h3 {
@@ -839,17 +1163,22 @@ body::before {
         font-size: 1.4rem;
     }
 
-    .project-image img {
-        height: 250px;
-    }
-
     .project-item {
         margin-bottom: 60px;
         gap: 30px;
     }
 
+    .skill-category {
+        padding: 24px;
+    }
+
+    .skill-subgrid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
     .skill-block {
-        padding: 20px;
+        padding: 18px;
     }
 
     .contact-item {
