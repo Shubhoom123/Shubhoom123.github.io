@@ -112,7 +112,7 @@
                     </span>
                     <span class="folder-info">
                         <span class="folder-name">AI &amp; Machine Learning</span>
-                        <span class="folder-count">2 projects</span>
+                        <span class="folder-count">3 projects</span>
                     </span>
                     <i class="fas fa-chevron-down folder-toggle-icon"></i>
                 </button>
@@ -153,8 +153,46 @@
                             </div>
                         </div>
 
-                        <!-- Project: Heart Disease Prediction -->
+                        <!-- Project: CodeJudge -->
                         <div class="project-item reverse">
+                            <div class="project-image">
+                                <video autoplay muted loop playsinline>
+                                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
+                                    <img src="https://via.placeholder.com/900x600?text=CodeJudge" alt="CodeJudge LLM Evaluation Framework">
+                                </video>
+                            </div>
+                            <div class="project-content">
+                                <div class="project-meta">
+                                    <span class="project-tag">AI / ML</span>
+                                    <span class="project-status">Advanced</span>
+                                </div>
+                                <h3>CodeJudge</h3>
+                                <p>
+                                    An automated LLM evaluation and fine-tuning framework that benchmarks code generation
+                                    quality at scale. Built a programmatic test suite of <strong>56,000+ test cases</strong>,
+                                    identified that <strong>qwen2:1.5b</strong> scored only 35.2% on a real-world parsing
+                                    task, then used <strong>gemma3:12b</strong> as a teacher model to generate 83
+                                    high-quality training examples. Fine-tuned qwen2:1.5b via <strong>LoRA on Google
+                                    Colab</strong> using Unsloth, improving accuracy from
+                                    <strong>35.2% → 99.6%</strong> — a 64.4 point improvement. Demonstrates
+                                    teacher-student knowledge distillation with category-level failure analysis.
+                                </p>
+                                <div class="project-tech">
+                                    <span>Python</span>
+                                    <span>Ollama</span>
+                                    <span>LoRA</span>
+                                    <span>Unsloth</span>
+                                    <span>mlx-lm</span>
+                                    <span>Google Colab</span>
+                                    <span>qwen2:1.5b</span>
+                                    <span>gemma3:12b</span>
+                                </div>
+                                <a href="https://github.com/Shubhoom123/codejudge" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                            </div>
+                        </div>
+
+                        <!-- Project: Heart Disease Prediction -->
+                        <div class="project-item">
                             <div class="project-image">
                                 <video autoplay muted loop playsinline>
                                     <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
@@ -379,6 +417,8 @@
                             <span>LangChain</span>
                             <span>LangGraph</span>
                             <span>Ollama</span>
+                            <span>Unsloth</span>
+                            <span>LoRA</span>
                             <span>ChromaDB</span>
                             <span>Pinecone</span>
                             <span>pgVector</span>
