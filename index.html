@@ -66,7 +66,7 @@
                     </span>
                     <span class="folder-info">
                         <span class="folder-name">Full-Stack Applications</span>
-                        <span class="folder-count">1 project</span>
+                        <span class="folder-count">2 projects</span>
                     </span>
                     <i class="fas fa-chevron-down folder-toggle-icon"></i>
                 </button>
@@ -98,30 +98,48 @@
                                 <a href="https://collaborative-coding-editor-frontend.onrender.com" target="_blank" rel="noopener noreferrer" class="project-link">View Project →</a>
                             </div>
                         </div>
-                        <!-- Project: File Storage System -->
-                        <div class="project-item">
+
+                        <!-- Project: Distributed File Storage System -->
+                        <div class="project-item reverse">
                             <div class="project-image">
                                 <video autoplay muted loop playsinline>
-                                    <source src="Gifs/#TODO" type="video/mp4">
-                                    <img src="https://via.placeholder.com/900x600?text=Real-Time+Collaborative+Code+Editor" alt="Collaborative Code Editor">
+                                    <source src="YOUR_VIDEO_URL_HERE" type="video/mp4">
+                                    <img src="https://via.placeholder.com/900x600?text=Distributed+File+Storage" alt="Distributed File Storage System">
                                 </video>
                             </div>
                             <div class="project-content">
                                 <div class="project-meta">
                                     <span class="project-tag">Full Stack</span>
-                                    <span class="project-status">Live</span>
+                                    <span class="project-status">In Progress</span>
                                 </div>
-                                <h3>Real-Time Collaborative Code Editor</h3>
-                                <p>A sophisticated real-time collaborative code editor with live synchronization, syntax highlighting for 8+ languages, integrated chat, and WebSocket technology. Multiple users can code together seamlessly with instant updates and a clean, intuitive interface.</p>
+                                <h3>Distributed File Storage System</h3>
+                                <p>
+                                    A distributed object storage engine built in <strong>Golang</strong> with file chunking (4MB blocks),
+                                    SHA-256 content-addressed deduplication, and a <strong>gRPC streaming service</strong>.
+                                    This implements a consistent hash ring with virtual nodes and replication factor 3 across a
+                                    <strong>MinIO cluster</strong>, reducing redundant storage by 40% in load-test benchmarks with others.
+                                    Features <strong>PostgreSQL stored metadata versioning</strong> similar to Git in terms of permanet record like commits in Git, vector clock
+                                    conflict detection, and CRDT merge strategies for concurrent disconnected writes. Deployed
+                                    on a <strong>3-node Kubernetes cluster</strong> with automatic leader election, regional
+                                    request routing, and monitoring via Prometheus and OpenTelemetry.
+                                </p>
                                 <div class="project-tech">
-                                    <span>React</span>
-                                    <span>Node.js</span>
-                                    <span>Socket.io</span>
-                                    <span>Monaco Editor</span>
+                                    <span>Go</span>
+                                    <span>SQL</span>
+                                    <span>Protobuf</span>
+                                    <span>Bash</span>
+                                    <span>gRPC</span>
+                                    <span>Docker</span>
+                                    <span>Kubernetes</span>
+                                    <span>MinIO</span>
+                                    <span>PostgreSQL</span>
+                                    <span>Prometheus</span>
+                                    <span>OpenTelemetry</span>
                                 </div>
-                                <a href="https://collaborative-coding-editor-frontend.onrender.com" target="_blank" rel="noopener noreferrer" class="project-link">View Project →</a>
+                                <a href="#" class="project-link">View on GitHub →</a>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -135,7 +153,7 @@
                     </span>
                     <span class="folder-info">
                         <span class="folder-name">AI &amp; Machine Learning</span>
-                        <span class="folder-count">3 projects</span>
+                        <span class="folder-count">2 projects</span>
                     </span>
                     <i class="fas fa-chevron-down folder-toggle-icon"></i>
                 </button>
@@ -172,7 +190,7 @@
                                     <span>Tavily</span>
                                     <span>Docker</span>
                                 </div>
-                                <a href="#" class="project-link">View Project →</a>
+                                <a href="https://rag-agent-langgraph.vercel.app/" class="project-link">View Project →</a>
                             </div>
                         </div>
 
