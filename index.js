@@ -536,11 +536,17 @@ const observeImages = () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const img = entry.target;
-                img.style.opacity = '0';
-                img.style.transition = 'opacity 0.6s ease';
-                img.onload = () => {
+                if (img.complete) {
+                    // Already loaded (cached, or finished before the
+                    // observer fired) — onload won't fire again, so show it now.
                     img.style.opacity = '1';
-                };
+                } else {
+                    img.style.opacity = '0';
+                    img.style.transition = 'opacity 0.6s ease';
+                    img.addEventListener('load', () => {
+                        img.style.opacity = '1';
+                    });
+                }
                 observer.unobserve(img);
             }
         });
