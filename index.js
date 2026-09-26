@@ -53,6 +53,12 @@ const createParticles = () => {
         particles.push(new Particle());
     }
 
+    // Current on-screen alpha for each particle pair (i < j), eased toward
+    // its target each frame so lines fade in/out instead of popping the
+    // instant a pair crosses the 150px connection radius.
+    const connectionAlphas = particles.map(() => new Array(particleCount).fill(0));
+    const CONNECTION_EASE = 0.06;
+
     const animate = () => {
         // Clear with pure black background
         ctx.fillStyle = '#000000';
@@ -71,9 +77,14 @@ const createParticles = () => {
                 const dy = particles[i].y - particle.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 150) {
+                const targetAlpha = distance < 150 ? (1 - distance / 150) * 0.25 : 0;
+                const current = connectionAlphas[index][i];
+                const eased = current + (targetAlpha - current) * CONNECTION_EASE;
+                connectionAlphas[index][i] = eased;
+
+                if (eased > 0.003) {
                     ctx.strokeStyle = '#0FBF3F';
-                    ctx.globalAlpha = (1 - distance / 150) * 0.25;
+                    ctx.globalAlpha = eased;
                     ctx.lineWidth = 1.2;
                     ctx.beginPath();
                     ctx.moveTo(particle.x, particle.y);

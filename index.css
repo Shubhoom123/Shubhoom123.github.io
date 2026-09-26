@@ -281,7 +281,7 @@ body::before {
 .hero-image {
     position: relative;
     z-index: 2;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 50%;
     width: 500px;
     height: 500px;
@@ -291,18 +291,24 @@ body::before {
 }
 
 .hero-image img {
-    width: 100%;
-    height: 100%;
+    width: 110%;
+    height: 110%;
     object-fit: cover;
     display: block;
+    transform: translate(-10px, -10px);
     border: 1px solid rgba(15, 191, 63, 0.3);
     border-radius: 50%;
     box-shadow: 0 0 40px rgba(15, 191, 63, 0.2);
-    transition: all var(--transition-smooth);
+    /* Return-to-normal leg: cursor leaves, glow eases out over 0.8s */
+    transition: box-shadow 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-image:hover img {
-    box-shadow: 0 0 60px rgba(15, 191, 63, 0.4);
+    box-shadow: 0 0 25px rgba(15, 191, 63, 0.55),
+                0 0 60px rgba(15, 191, 63, 0.4),
+                0 0 110px rgba(95, 237, 131, 0.3);
+    /* Hover-in leg: matches the page's normal transition speed */
+    transition: box-shadow var(--transition-smooth);
 }
 
 /* ========================================
