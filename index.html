@@ -156,9 +156,9 @@
                     <!-- 04 CodeJudge -->
                     <article class="tile" data-cat="ml" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: CodeJudge">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 04 &middot; Fine-tuning</p>
+                            <p class="eyebrow data">Case file 04 &middot; LLM Evaluation</p>
                             <h3>CodeJudge</h3>
-                            <p class="tile-sum">My automated LLM evaluation and fine-tuning framework which benchmarks code generation quality at a large scale.</p>
+                            <p class="tile-sum">An evaluation and training pipeline that tests whether a small language model (Qwen2-1.5B) can write a correct parse_amount() function, graded in a sandbox against a corpus of 30 million test cases.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
@@ -166,20 +166,15 @@
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
-                                <dt>Type</dt><dd>Fine-tuning</dd>
-                                <dt>Status</dt><dd>Advanced</dd>
-                                <dt>Medium</dt><dd>Python, Ollama, LoRA, Unsloth, Google Colab, qwen2:1.5b, gemma3:12b</dd>
+                                <dt>Type</dt><dd>LLM Evaluation &amp; Fine-tuning</dd>
+                                <dt>Status</dt><dd>In Progress</dd>
+                                <dt>Medium</dt><dd>Python, Qwen2-1.5B, LoRA, SFT, DPO, Hugging Face Transformers, Google Colab (T4)</dd>
+                                <dt>Planned</dt><dd>GGUF / AWQ quantization, FastAPI, Prometheus, Docker, Kubernetes</dd>
                             </dl>
-                            <p>
-                                My automated LLM evaluation and fine-tuning framework which benchmarks code generation
-                                quality at a large scale. I built a programmatic test suite of <strong>56,000+ test cases</strong>,
-                                which when run on the <strong>qwen2:1.5b</strong> model scored only 35.2% on a simple parsing
-                                task, then I used <strong>gemma3:12b</strong> as a teacher model to generate 83
-                                training examples. After that I fine-tuned qwen2:1.5b via <strong>LoRA on Google
-                                Colab</strong> using Unsloth, improving accuracy from
-                                <strong>35.2% &rarr; 99.6%</strong>, a 64.4 point improvement. This showed a
-                                teacher-student knowledge distillation with category-level failure analysis.
-                            </p>
+                            <p>CodeJudge tests whether a small language model (<strong>Qwen2-1.5B</strong>) can write a correct <strong>parse_amount()</strong> function for an ambiguous spec. Generated code runs in a sandbox, and a grader scores it against a corpus of <strong>30 million test cases</strong>. Every number in the project comes from a script: a results ledger records the source and command behind each headline figure.</p>
+                            <p><strong>Supervised fine-tuning (done).</strong> I trained LoRA adapters on 117 solutions that passed every grader test, across 16 runs on a Colab T4: three training-set sizes by three seeds, a step-matched control, and an untrained baseline. Training worked, but written numbers make up 47.2% of the corpus and no run solved them (best 3.8%). Every working run scored 52.8&ndash;54.5%, matching the earlier models, so SFT did not improve the score. I documented that negative result instead of hiding it.</p>
+                            <p><strong>Preference training (in progress).</strong> DPO shows the model both a passing and a failing solution for the same prompt, aimed at the written-number failures. 468 preference pairs are built and checked, and the next step is a paired SFT vs SFT+DPO comparison across three seeds.</p>
+                            <p><strong>Next.</strong> An evaluation release gate that blocks regressions by category slice, then quantized serving behind a FastAPI gateway with metrics, Docker and Kubernetes. These are planned, not started.</p>
                             <div class="links data"><a href="https://github.com/Shubhoom123/codejudge" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a></div>
                         </div>
                     </article>
