@@ -327,6 +327,8 @@ a { color: inherit; text-decoration: none; }
 .spec h3 { margin: 10px 0 22px; font: 400 clamp(30px, 3.2vw, 42px)/1.05 var(--display); letter-spacing: -.015em; }
 .spec p { font-size: 18px; line-height: 1.42; color: var(--body); }
 .spec p + p { margin-top: 14px; }
+.spec-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(28px, 5vw, 64px); }
+.spec-groups p, .spec-groups p + p { margin-top: 0; }
 .spec b { display: block; margin-bottom: 2px; font-weight: 400; color: var(--muted); font: 400 12.5px/1.5 var(--data); }
 
 /* ==========================================================================
@@ -432,6 +434,7 @@ a { color: inherit; text-decoration: none; }
 
     .specs { grid-template-columns: minmax(0, 1fr); }
     .spec.s2, .spec.s3, .spec.s4, .spec.s6 { grid-column: auto; }
+    .spec-groups { grid-template-columns: minmax(0, 1fr); }
 
     .modal { padding: 12px; }
     .modal-sheet { max-height: calc(100vh - 24px); }

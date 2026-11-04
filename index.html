@@ -179,16 +179,40 @@
                         </div>
                     </article>
 
-                    <!-- 05 Movie Ratings Analysis -->
-                    <article class="tile" data-cat="data" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Movie Ratings Analysis">
+                    <!-- 05 JobFit -->
+                    <article class="tile" data-cat="ml" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: JobFit">
                         <div class="tile-top">
                             <p class="eyebrow data">Case file 05 &middot; Machine Learning</p>
+                            <h3>JobFit</h3>
+                            <p class="tile-sum">A job-posting ranker that benchmarks a probabilistic record-linkage baseline (Fellegi-Sunter) against classical ML and a fine-tuned transformer, then serves the best model on Triton Inference Server.</p>
+                        </div>
+                        <!-- Add a video: replace the .tile-art block with
+                             <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
+                        <div class="tile-art" aria-hidden="true">05</div>
+                        <span class="tile-plus" aria-hidden="true"></span>
+                        <div class="detail" hidden>
+                            <dl class="label data">
+                                <dt>Type</dt><dd>Machine Learning</dd>
+                                <dt>Status</dt><dd>Planned</dd>
+                                <dt>Medium</dt><dd>Python, spaCy, NLTK, pandas, NumPy, scikit-learn, XGBoost, TensorFlow, Hugging Face (DistilBERT), PostgreSQL, ONNX, TensorRT, Triton Inference Server, gRPC, Docker, Weights &amp; Biases, GitHub Actions</dd>
+                            </dl>
+                            <p>JobFit ranks job postings by relevance to a user&rsquo;s stated preferences. It exists to answer one question: <strong>when is a cheap classical model the right production choice, and when is a transformer worth its latency and cost?</strong></p>
+                            <p><strong>The comparison.</strong> A <strong>Fellegi-Sunter</strong> record-linkage baseline (a technique I have already used in a Chrome extension) is benchmarked against logistic regression, SVM, Naive Bayes, random forest, XGBoost, a TensorFlow MLP, and a fine-tuned <strong>DistilBERT</strong>. Every model runs on the same labeled posting&ndash;profile pairs, with splits grouped by profile and company to prevent leakage, stratified cross-validation, PR-AUC with bootstrap confidence intervals, and K-means / PCA clustering of the errors.</p>
+                            <p><strong>The serving path.</strong> The best transformer is exported to <strong>ONNX</strong>, optimized with <strong>TensorRT</strong> at FP32, FP16 and INT8, and served on <strong>Triton Inference Server</strong> over gRPC with dynamic batching. The trade-off between PR-AUC and P50/P95/P99 latency is measured, and every run is tracked in Weights &amp; Biases.</p>
+                            <p><strong>Status.</strong> Planned: nothing is built yet, so there are no results to report. Every number will come from a script, and the limitations (synthetic user profiles, label noise, a small dataset, the hardware available) will be written down.</p>
+                        </div>
+                    </article>
+
+                    <!-- 06 Movie Ratings Analysis -->
+                    <article class="tile" data-cat="data" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Movie Ratings Analysis">
+                        <div class="tile-top">
+                            <p class="eyebrow data">Case file 06 &middot; Machine Learning</p>
                             <h3>Movie Ratings Analysis</h3>
                             <p class="tile-sum">Analyzes viewer rating patterns and builds predictive models using neural networks with PCA and K-Means clustering.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">05</div>
+                        <div class="tile-art" aria-hidden="true">06</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -201,16 +225,16 @@
                         </div>
                     </article>
 
-                    <!-- 06 Premier League Analysis -->
+                    <!-- 07 Premier League Analysis -->
                     <article class="tile" data-cat="data" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Premier League Analysis">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 06 &middot; Data Analytics</p>
+                            <p class="eyebrow data">Case file 07 &middot; Data Analytics</p>
                             <h3>Premier League Analysis</h3>
                             <p class="tile-sum">Explores English Premier League team performances, focusing on wins, home vs. away results, and statistical insights.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">06</div>
+                        <div class="tile-art" aria-hidden="true">07</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -248,22 +272,32 @@
                         <p><b class="data">Languages</b>Java, C#, Python, Rust, JavaScript, TypeScript, Go</p>
                         <p><b class="data">Tools</b>Spring Boot, .NET, Django, Flask, Axum, Rocket, Express, NestJS, Gin, Echo</p>
                     </article>
-                    <article class="spec s2">
+                    <article class="spec s3">
                         <p class="eyebrow data">03</p>
                         <h3>Database</h3>
                         <p><b class="data">Languages</b>SQL, pgSQL, T-SQL, PL/SQL, NoSQL</p>
                         <p><b class="data">Tools</b>DBeaver, pgAdmin, Azure, SSMS, TOAD (Oracle), MongoDB</p>
                     </article>
-                    <article class="spec s4">
+                    <article class="spec s3">
                         <p class="eyebrow data">04</p>
-                        <h3>AI / ML</h3>
-                        <p><b class="data">Languages</b>Python, CUDA, C++, R</p>
-                        <p><b class="data">Tools</b>PyTorch, Keras, TensorFlow, NVIDIA TensorRT, NVIDIA cuDNN, LangChain, LangGraph, Ollama, Unsloth, LoRA, ChromaDB, Pinecone, pgVector</p>
+                        <h3>Tools &amp; DevOps</h3>
+                        <p><b class="data">Tools</b>Git &amp; GitHub, Docker, AWS, Jenkins, Jest &amp; Pytest, Agile/Scrum</p>
                     </article>
                     <article class="spec s6">
                         <p class="eyebrow data">05</p>
-                        <h3>Tools &amp; DevOps</h3>
-                        <p><b class="data">Tools</b>Git &amp; GitHub, Docker, AWS, Jenkins, Jest &amp; Pytest, Agile/Scrum</p>
+                        <h3>AI / ML</h3>
+                        <div class="spec-groups">
+                            <p><b class="data">Scientific &amp; High-Level Programming</b>Python, Julia, R</p>
+                            <p><b class="data">Systems &amp; Compiled Programming</b>C, C++, Rust, Go</p>
+                            <p><b class="data">GPU &amp; Parallel Programming</b>CUDA, Triton, OpenCL, Mojo</p>
+                            <p><b class="data">Data &amp; Query Languages</b>SQL (PostgreSQL, T-SQL, PL/SQL)</p>
+                            <p><b class="data">ML Frameworks &amp; Libraries</b>PyTorch, TensorFlow, Keras, scikit-learn, XGBoost, NumPy, pandas</p>
+                            <p><b class="data">ML Algorithms</b>Linear/logistic regression, KNN, ANN, SVM, Naive Bayes, Decision trees, Random forests, Bagging, Boosting (gradient boosting), K-means clustering, PCA/dimensionality reduction, Neural networks</p>
+                            <p><b class="data">NLP &amp; LLM Ecosystem</b>Hugging Face Transformers, spaCy, NLTK, LangChain, LangGraph, LlamaIndex, DSPy, AutoGen, vLLM, TensorRT-LLM, MCP, Ollama</p>
+                            <p><b class="data">Fine-Tuning &amp; Adaptation</b>LoRA, QLoRA, PEFT, SFT, DPO, RLHF, Unsloth, quantization (AWQ, GGUF, FP8, INT4), ONNX</p>
+                            <p><b class="data">RAG &amp; Retrieval</b>Pinecone, Milvus, Qdrant, ChromaDB, pgvector, FAISS, re-ranking (Cohere, BGE), GraphRAG</p>
+                            <p><b class="data">MLOps, Serving &amp; Infrastructure</b>Docker, Kubernetes, AWS (SageMaker, EKS, S3), GCP (Vertex AI), MLflow, Weights &amp; Biases, gRPC, Triton Inference Server, cuDNN, TensorRT, CI/CD, Prometheus, OpenTelemetry</p>
+                        </div>
                     </article>
                 </div>
             </div>
