@@ -131,16 +131,66 @@
                         </div>
                     </article>
 
-                    <!-- 03 d-RAG-on -->
+                    <!-- 03 Event-Driven Order Processing Platform -->
+                    <article class="tile" data-cat="fullstack" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Event-Driven Order Processing Platform">
+                        <div class="tile-top">
+                            <p class="eyebrow data">Case file 03 &middot; Distributed Systems</p>
+                            <h3>Event-Driven Order Processing Platform</h3>
+                            <p class="tile-sum">An e-commerce backend split into Order, Inventory, Payment and Notification services that coordinate through Kafka, using a transactional outbox, idempotent consumers and an orchestrated saga.</p>
+                        </div>
+                        <!-- Add a video: replace the .tile-art block with
+                             <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
+                        <div class="tile-art" aria-hidden="true">03</div>
+                        <span class="tile-plus" aria-hidden="true"></span>
+                        <div class="detail" hidden>
+                            <dl class="label data">
+                                <dt>Type</dt><dd>Distributed Systems</dd>
+                                <dt>Status</dt><dd>Planned</dd>
+                                <dt>Medium</dt><dd>Java 21, Spring Boot, Kafka (KRaft), PostgreSQL, Docker Compose, Testcontainers, GitHub Actions, Prometheus, Grafana, k6</dd>
+                            </dl>
+                            <p>An e-commerce backend split into <strong>Order, Inventory, Payment and Notification</strong> services that coordinate through <strong>Kafka</strong> instead of direct calls. A payment failure must roll back the inventory reservation without a distributed transaction, which is the classic saga problem.</p>
+                            <p><strong>Correctness under failure.</strong> Each service writes its state change and its outgoing event in one Postgres transaction (a <strong>transactional outbox</strong>), and a relay publishes the events to Kafka, so no event is lost if the broker is down. <strong>Idempotent consumers</strong> use a processed-events table with deduplication keys, giving an exactly-once effect on top of at-least-once delivery.</p>
+                            <p><strong>Coordination and recovery.</strong> An <strong>orchestrated saga</strong> reserves inventory, charges payment and confirms the order, with compensating actions on failure and a timeout-driven recovery path. Failed messages go through retry topics with backoff, a dead-letter queue and a replay tool.</p>
+                            <p><strong>Proof.</strong> Trace IDs travel through Kafka headers, consumer lag is exported to Prometheus with a Grafana dashboard, and failure-injection tests kill a consumer mid-processing, force duplicate delivery and take the broker down, asserting no lost orders and no double charges.</p>
+                            <p><strong>Status.</strong> Planned: nothing is built yet, so there are no results to report.</p>
+                        </div>
+                    </article>
+
+                    <!-- 04 Distributed Rate-Limiting API Gateway -->
+                    <article class="tile" data-cat="fullstack" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Distributed Rate-Limiting API Gateway">
+                        <div class="tile-top">
+                            <p class="eyebrow data">Case file 04 &middot; Distributed Systems</p>
+                            <h3>Distributed Rate-Limiting API Gateway</h3>
+                            <p class="tile-sum">A reverse proxy and API gateway in Go that enforces rate limits across multiple instances, sheds load gracefully when a backend slows down, and is deployed to AWS entirely through Terraform.</p>
+                        </div>
+                        <!-- Add a video: replace the .tile-art block with
+                             <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
+                        <div class="tile-art" aria-hidden="true">04</div>
+                        <span class="tile-plus" aria-hidden="true"></span>
+                        <div class="detail" hidden>
+                            <dl class="label data">
+                                <dt>Type</dt><dd>Distributed Systems</dd>
+                                <dt>Status</dt><dd>Planned</dd>
+                                <dt>Medium</dt><dd>Go, Redis (Lua), Terraform, AWS (ECS Fargate or EKS, ALB, ElastiCache, CloudWatch), GitHub Actions, Prometheus, Grafana, k6</dd>
+                            </dl>
+                            <p>A reverse proxy and API gateway in <strong>Go</strong> that sits in front of backend services. It enforces rate limits that stay correct across multiple gateway instances, sheds load gracefully when a backend slows down, and is deployed to AWS entirely through <strong>Terraform</strong>.</p>
+                            <p><strong>Limiting.</strong> Token bucket, sliding-window log and sliding-window counter, with a benchmark comparing accuracy, memory use and latency. Shared state lives in <strong>Redis</strong> behind atomic Lua scripts, with a local-cache fast path that trades a small accuracy loss for fewer Redis round trips. Per-route and per-API-key limits reload without a restart.</p>
+                            <p><strong>Resilience.</strong> Circuit breakers, per-backend concurrency limits (bulkheads), request timeouts and deadlines, and load shedding that returns 429/503 instead of collapsing. The policy for when Redis itself is down (fail open or fail closed) is defined and tested.</p>
+                            <p><strong>Infrastructure and results.</strong> Terraform modules for the VPC, ECS Fargate or EKS, an ALB, ElastiCache and CloudWatch, with a pipeline that plans on pull requests and applies on merge. A published k6 or Vegeta load-test report will show throughput, p50/p95/p99 latency, limiter accuracy at the boundary, and behavior when a backend is deliberately slowed or killed.</p>
+                            <p><strong>Status.</strong> Planned: nothing is built yet, so there are no results to report.</p>
+                        </div>
+                    </article>
+
+                    <!-- 05 d-RAG-on -->
                     <article class="tile" data-cat="ml" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: d-RAG-on">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 03 &middot; Machine Learning</p>
+                            <p class="eyebrow data">Case file 05 &middot; Machine Learning</p>
                             <h3>d-RAG-on</h3>
                             <p class="tile-sum">My FullStack AI Chatbot built from scratch using a Retrieval-Augmented Generation (RAG) pipeline orchestrated using LangGraph.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">03</div>
+                        <div class="tile-art" aria-hidden="true">05</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -153,16 +203,16 @@
                         </div>
                     </article>
 
-                    <!-- 04 CodeJudge -->
+                    <!-- 06 CodeJudge -->
                     <article class="tile" data-cat="ml" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: CodeJudge">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 04 &middot; LLM Evaluation</p>
+                            <p class="eyebrow data">Case file 06 &middot; LLM Evaluation</p>
                             <h3>CodeJudge</h3>
                             <p class="tile-sum">An evaluation and training pipeline that tests whether a small language model (Qwen2-1.5B) can write a correct parse_amount() function, graded in a sandbox against a corpus of 30 million test cases.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">04</div>
+                        <div class="tile-art" aria-hidden="true">06</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -179,16 +229,16 @@
                         </div>
                     </article>
 
-                    <!-- 05 JobFit -->
+                    <!-- 07 JobFit -->
                     <article class="tile" data-cat="ml" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: JobFit">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 05 &middot; Machine Learning</p>
+                            <p class="eyebrow data">Case file 07 &middot; Machine Learning</p>
                             <h3>JobFit</h3>
                             <p class="tile-sum">A job-posting ranker that benchmarks a probabilistic record-linkage baseline (Fellegi-Sunter) against classical ML and a fine-tuned transformer, then serves the best model on Triton Inference Server.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">05</div>
+                        <div class="tile-art" aria-hidden="true">07</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -203,16 +253,16 @@
                         </div>
                     </article>
 
-                    <!-- 06 GraphRAG-MCP -->
+                    <!-- 08 GraphRAG-MCP -->
                     <article class="tile" data-cat="ml" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: GraphRAG-MCP">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 06 &middot; Machine Learning</p>
+                            <p class="eyebrow data">Case file 08 &middot; Machine Learning</p>
                             <h3>GraphRAG-MCP</h3>
                             <p class="tile-sum">A multi-hop research agent that combines GraphRAG, hybrid retrieval and DSPy-optimized prompts, with an ablation ladder that measures what each component actually buys.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">06</div>
+                        <div class="tile-art" aria-hidden="true">08</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -228,16 +278,16 @@
                         </div>
                     </article>
 
-                    <!-- 07 Movie Ratings Analysis -->
+                    <!-- 09 Movie Ratings Analysis -->
                     <article class="tile" data-cat="data" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Movie Ratings Analysis">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 07 &middot; Machine Learning</p>
+                            <p class="eyebrow data">Case file 09 &middot; Machine Learning</p>
                             <h3>Movie Ratings Analysis</h3>
                             <p class="tile-sum">Analyzes viewer rating patterns and builds predictive models using neural networks with PCA and K-Means clustering.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">07</div>
+                        <div class="tile-art" aria-hidden="true">09</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -250,16 +300,16 @@
                         </div>
                     </article>
 
-                    <!-- 08 Premier League Analysis -->
+                    <!-- 10 Premier League Analysis -->
                     <article class="tile" data-cat="data" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Premier League Analysis">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 08 &middot; Data Analytics</p>
+                            <p class="eyebrow data">Case file 10 &middot; Data Analytics</p>
                             <h3>Premier League Analysis</h3>
                             <p class="tile-sum">Explores English Premier League team performances, focusing on wins, home vs. away results, and statistical insights.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">08</div>
+                        <div class="tile-art" aria-hidden="true">10</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -285,31 +335,50 @@
                 </header>
 
                 <div class="specs">
-                    <article class="spec s3">
+                    <article class="spec s6">
                         <p class="eyebrow data">01</p>
+                        <h3>Languages</h3>
+                        <p>Go, Rust, C++, Java, Python, C#, TypeScript, JavaScript, SQL (PostgreSQL, T-SQL, PL/SQL)</p>
+                    </article>
+                    <article class="spec s3">
+                        <p class="eyebrow data">02</p>
+                        <h3>Distributed Systems</h3>
+                        <p><b class="data">Protocols &amp; algorithms</b>gRPC, Protocol Buffers, Raft consensus &amp; leader election, consistent hashing, replication, vector clocks, CRDTs</p>
+                    </article>
+                    <article class="spec s3">
+                        <p class="eyebrow data">03</p>
+                        <h3>Concurrency &amp; Systems</h3>
+                        <p><b class="data">Concepts &amp; tools</b>Goroutines &amp; channels, multithreading, asynchronous I/O, Linux internals, Bash scripting</p>
+                    </article>
+                    <article class="spec s3">
+                        <p class="eyebrow data">04</p>
+                        <h3>Backend &amp; APIs</h3>
+                        <p><b class="data">Frameworks &amp; APIs</b>Spring Boot, .NET, Django, Flask, Express, NestJS, Gin, Echo, Axum, Rocket; REST, gRPC streaming, middleware security</p>
+                    </article>
+                    <article class="spec s3">
+                        <p class="eyebrow data">05</p>
                         <h3>Frontend</h3>
                         <p><b class="data">Languages</b>HTML, CSS, JavaScript, TypeScript</p>
                         <p><b class="data">Tools</b>React, Next.js, Vue.js, Angular, Tailwind CSS, Bootstrap, Vite, Axios</p>
                     </article>
                     <article class="spec s3">
-                        <p class="eyebrow data">02</p>
-                        <h3>Backend</h3>
-                        <p><b class="data">Languages</b>Java, C#, Python, Rust, JavaScript, TypeScript, Go</p>
-                        <p><b class="data">Tools</b>Spring Boot, .NET, Django, Flask, Axum, Rocket, Express, NestJS, Gin, Echo</p>
-                    </article>
-                    <article class="spec s3">
-                        <p class="eyebrow data">03</p>
-                        <h3>Database</h3>
+                        <p class="eyebrow data">06</p>
+                        <h3>Databases &amp; Storage</h3>
                         <p><b class="data">Languages</b>SQL, pgSQL, T-SQL, PL/SQL, NoSQL</p>
-                        <p><b class="data">Tools</b>DBeaver, pgAdmin, Azure, SSMS, TOAD (Oracle), MongoDB</p>
+                        <p><b class="data">Tools</b>PostgreSQL, MongoDB, Firestore, MinIO (object storage), DBeaver, pgAdmin, SSMS, TOAD (Oracle), Azure SQL</p>
                     </article>
                     <article class="spec s3">
-                        <p class="eyebrow data">04</p>
-                        <h3>Tools &amp; DevOps</h3>
-                        <p><b class="data">Tools</b>Git &amp; GitHub, Docker, AWS, Jenkins, Jest &amp; Pytest, Agile/Scrum</p>
+                        <p class="eyebrow data">07</p>
+                        <h3>Infrastructure &amp; DevOps</h3>
+                        <p><b class="data">Tools</b>Kubernetes, Docker, AWS, Jenkins, CI/CD, Prometheus, OpenTelemetry, Vercel, Render</p>
                     </article>
                     <article class="spec s6">
-                        <p class="eyebrow data">05</p>
+                        <p class="eyebrow data">08</p>
+                        <h3>Testing &amp; Practices</h3>
+                        <p><b class="data">Tools &amp; practices</b>Pytest, Jest, Go testing, unit &amp; integration testing, load testing, Git &amp; GitHub, code review, Agile/Scrum</p>
+                    </article>
+                    <article class="spec s6">
+                        <p class="eyebrow data">09</p>
                         <h3>AI / ML</h3>
                         <div class="spec-groups">
                             <p><b class="data">Scientific &amp; High-Level Programming</b>Python, Julia, R</p>
