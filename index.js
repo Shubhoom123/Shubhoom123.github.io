@@ -1,580 +1,254 @@
-// ========================================
-// Animated Background - Floating Particles
-// ========================================
-const createParticles = () => {
-    const canvas = document.createElement('canvas');
-    canvas.style.position = 'fixed';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.pointerEvents = 'none';
-    canvas.style.zIndex = '0';
-    document.body.insertBefore(canvas, document.body.firstChild);
+// ==========================================================================
+// Shubham Khalkho: portfolio
+// GSAP + ScrollTrigger handle the choreography. Everything degrades: if the
+// scripts fail to load, or the visitor prefers reduced motion, all content is
+// simply visible and the page still works.
+// ==========================================================================
+(function () {
+    'use strict';
 
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const $ = (sel, ctx) => (ctx || document).querySelector(sel);
+    const $$ = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
 
-    const particles = [];
-    const particleCount = 40;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasGsap = !!(window.gsap && window.ScrollTrigger);
+    const animate = hasGsap && !calm;
 
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 0.4;
-            this.speedY = (Math.random() - 0.5) * 0.4;
-            this.opacity = Math.random() * 0.5 + 0.2;
-            this.color = Math.random() > 0.5 ? '#0FBF3F' : '#5FED83';
-        }
-
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-
-            if (this.x > canvas.width) this.x = 0;
-            if (this.x < 0) this.x = canvas.width;
-            if (this.y > canvas.height) this.y = 0;
-            if (this.y < 0) this.y = canvas.height;
-        }
-
-        draw() {
-            ctx.fillStyle = this.color;
-            ctx.globalAlpha = this.opacity;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-    }
-
-    // Current on-screen alpha for each particle pair (i < j), eased toward
-    // its target each frame so lines fade in/out instead of popping the
-    // instant a pair crosses the 150px connection radius.
-    const connectionAlphas = particles.map(() => new Array(particleCount).fill(0));
-    const CONNECTION_EASE = 0.06;
-
-    const animate = () => {
-        // Clear with pure black background
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.globalAlpha = 1;
-
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
+    // ----------------------------------------------------------------------
+    // Navigation: highlight the section in view
+    // ----------------------------------------------------------------------
+    const navLinks = $$('.nav nav a');
+    const sections = navLinks.map((link) => $(link.getAttribute('href'))).filter(Boolean);
+    const placeNav = () => {
+        let current = null;
+        sections.forEach((section) => {
+            if (section.getBoundingClientRect().top <= window.innerHeight * 0.4) current = section.id;
         });
+        navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + current));
+    };
+    window.addEventListener('scroll', placeNav, { passive: true });
+    placeNav();
 
-        // Draw connecting lines
-        particles.forEach((particle, index) => {
-            for (let i = index + 1; i < particles.length; i++) {
-                const dx = particles[i].x - particle.x;
-                const dy = particles[i].y - particle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+    // Placeholder links (href="#" inside a case file) should do nothing.
+    document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[data-placeholder]');
+        if (link) event.preventDefault();
+    });
 
-                const targetAlpha = distance < 150 ? (1 - distance / 150) * 0.25 : 0;
-                const current = connectionAlphas[index][i];
-                const eased = current + (targetAlpha - current) * CONNECTION_EASE;
-                connectionAlphas[index][i] = eased;
+    // ----------------------------------------------------------------------
+    // Projects: filter pills
+    // ----------------------------------------------------------------------
+    const tiles = $$('.tile');
+    const filters = $$('.filter');
 
-                if (eased > 0.003) {
-                    ctx.strokeStyle = '#0FBF3F';
-                    ctx.globalAlpha = eased;
-                    ctx.lineWidth = 1.2;
-                    ctx.beginPath();
-                    ctx.moveTo(particle.x, particle.y);
-                    ctx.lineTo(particles[i].x, particles[i].y);
-                    ctx.stroke();
-                }
-            }
+    // Case-file numbers follow the order of the tiles currently on screen:
+    // 01-02 inside a category, 01-06 in "All".
+    const renumber = (list) => {
+        list.forEach((tile, index) => {
+            const n = String(index + 1).padStart(2, '0');
+            const label = $('.eyebrow', tile);
+            if (label) label.textContent = label.textContent.replace(/Case file \d+/, 'Case file ' + n);
+            const art = $('.tile-art', tile);
+            if (art) art.textContent = n;
         });
-
-        requestAnimationFrame(animate);
     };
 
-    animate();
-
-    // Resize handler
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-    });
-};
-
-// Initialize particles on load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createParticles);
-} else {
-    createParticles();
-}
-
-// ========================================
-// Navbar Scroll Effect
-// ========================================
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
-
-// ========================================
-// Smooth Scroll for Navigation Links
-// ========================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href !== '#') {
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }
-    });
-});
-
-// ========================================
-// Intersection Observer for Scroll Animations
-// ========================================
-const observerOptions = {
-    threshold: 0.15,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            setTimeout(() => {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }, index * 100);
-            
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-// Observe skill blocks and contact items (project items live inside
-// collapsible folders, so they're animated separately below)
-document.querySelectorAll('.skill-category, .contact-item').forEach((el) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(40px)';
-    el.style.transition = 'opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
-    observer.observe(el);
-});
-
-// Observe folder cards themselves with the same fade-in
-document.querySelectorAll('.folder').forEach((el) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(40px)';
-    el.style.transition = 'opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
-    observer.observe(el);
-});
-
-// ========================================
-// Featured Projects: Folder Expand/Collapse
-// ========================================
-// Uses a JS-measured max-height (rather than a pure CSS grid-rows trick)
-// so collapsed folders fully hide their contents in every browser, with
-// no partial bleed-through of tags/badges.
-const initProjectFolders = () => {
-    const folders = document.querySelectorAll('.folder');
-
-    const simpleDebounce = (fn, wait) => {
-        let timeout;
-        return (...args) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => fn(...args), wait);
-        };
-    };
-
-    const setOpenHeight = (folder) => {
-        const content = folder.querySelector('.folder-content');
-        if (content) content.style.maxHeight = content.scrollHeight + 'px';
-    };
-
-    const openFolder = (folder) => {
-        const header = folder.querySelector('.folder-header');
-        folder.classList.add('open');
-        if (header) header.setAttribute('aria-expanded', 'true');
-        setOpenHeight(folder);
-    };
-
-    const closeFolder = (folder) => {
-        const content = folder.querySelector('.folder-content');
-        const header = folder.querySelector('.folder-header');
-        if (content) content.style.maxHeight = '0px';
-        folder.classList.remove('open');
-        if (header) header.setAttribute('aria-expanded', 'false');
-    };
-
-    folders.forEach((folder) => {
-        const header = folder.querySelector('.folder-header');
-        if (!header) return;
-
-        header.addEventListener('click', () => {
-            const isOpen = folder.classList.contains('open');
-
-            // Only one folder open at a time
-            folders.forEach((other) => {
-                if (other !== folder && other.classList.contains('open')) {
-                    closeFolder(other);
-                }
+    filters.forEach((button) => {
+        button.addEventListener('click', () => {
+            const value = button.dataset.filter;
+            filters.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+            const shown = [];
+            tiles.forEach((tile) => {
+                const match = value === 'all' || tile.dataset.cat === value;
+                tile.hidden = !match;
+                if (match) shown.push(tile);
             });
-
-            if (isOpen) {
-                closeFolder(folder);
-            } else {
-                openFolder(folder);
+            renumber(shown);
+            if (animate) {
+                gsap.fromTo(shown, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.07, ease: 'power3.out', overwrite: true, onComplete: () => gsap.set(shown, { clearProps: 'transform' }) });
+                ScrollTrigger.refresh();
             }
-        });
-
-        // Keyboard support (Enter/Space) for accessibility
-        header.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                header.click();
-            }
-        });
-
-        // Videos may report their layout box late; recalc height once
-        // metadata loads so playing content never gets clipped.
-        folder.querySelectorAll('video').forEach((video) => {
-            video.addEventListener('loadedmetadata', () => {
-                if (folder.classList.contains('open')) setOpenHeight(folder);
-            });
         });
     });
 
-    // Replace the generous CSS fallback height on the default-open folder
-    // with its exact measured height once layout has settled.
-    const defaultOpen = document.querySelector('.folder.open');
-    if (defaultOpen) {
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => setOpenHeight(defaultOpen));
-        });
-    }
+    // ----------------------------------------------------------------------
+    // Case-file sheet: open a tile to read the whole story
+    // ----------------------------------------------------------------------
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.innerHTML =
+        '<div class="modal-sheet" tabindex="-1">' +
+        '<button class="modal-close" type="button" aria-label="Close"></button>' +
+        '<div class="modal-media"></div>' +
+        '<div class="modal-body"><div class="modal-head"></div><div class="modal-copy"></div></div>' +
+        '</div>';
+    document.body.appendChild(modal);
 
-    // Recompute the open folder's height if the viewport is resized
-    // (text reflow changes content height on smaller screens).
-    window.addEventListener('resize', simpleDebounce(() => {
-        document.querySelectorAll('.folder.open').forEach(setOpenHeight);
-    }, 150));
-};
+    const sheet = $('.modal-sheet', modal);
+    const mediaBox = $('.modal-media', modal);
+    const head = $('.modal-head', modal);
+    const copy = $('.modal-copy', modal);
+    const closeBtn = $('.modal-close', modal);
+    let lastFocus = null;
 
-initProjectFolders();
+    const openTile = (tile) => {
+        lastFocus = document.activeElement;
+        head.innerHTML = '';
+        head.appendChild($('.eyebrow', tile).cloneNode(true));
+        head.appendChild($('h3', tile).cloneNode(true));
+        copy.innerHTML = $('.detail', tile).innerHTML;
+        modal.setAttribute('aria-label', $('h3', tile).textContent);
 
-// ========================================
-// Project Media Lightbox (click to enlarge)
-// ========================================
-// Screen-recorded demo videos are too detailed to read at thumbnail
-// size; clicking one opens a much larger view so every UI detail is
-// actually legible.
-const initProjectLightbox = () => {
-    const mediaBoxes = document.querySelectorAll('.project-image');
-    if (!mediaBoxes.length) return;
-
-    // Build the lightbox shell once and reuse it for every project.
-    const overlay = document.createElement('div');
-    overlay.className = 'lightbox-overlay';
-    overlay.innerHTML = `
-        <div class="lightbox-content">
-            <button class="lightbox-close" aria-label="Close"><i class="fas fa-times"></i></button>
-        </div>
-    `;
-    document.body.appendChild(overlay);
-
-    const content = overlay.querySelector('.lightbox-content');
-    const closeBtn = overlay.querySelector('.lightbox-close');
-    let activeMedia = null;
-
-    const closeLightbox = () => {
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-        if (activeMedia && activeMedia.tagName === 'VIDEO') {
-            activeMedia.pause();
-        }
-        if (activeMedia) {
-            activeMedia.remove();
-            activeMedia = null;
-        }
-    };
-
-    const openLightbox = (box) => {
-        // Pull the same source the thumbnail uses (video > source, or img)
-        const sourceVideo = box.querySelector('video');
-        const sourceImg = box.querySelector('img');
-
-        let el;
-        if (sourceVideo) {
-            const src = sourceVideo.querySelector('source');
-            el = document.createElement('video');
-            el.autoplay = true;
-            el.muted = true;
-            el.loop = true;
-            el.playsInline = true;
-            el.controls = true;
+        mediaBox.innerHTML = '';
+        const source = $('.tile-media video source', tile);
+        if (source) {
+            const video = document.createElement('video');
+            video.autoplay = true;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.controls = true;
             const s = document.createElement('source');
-            s.src = src ? src.src : '';
+            s.src = source.src;
             s.type = 'video/mp4';
-            el.appendChild(s);
-        } else if (sourceImg) {
-            el = document.createElement('img');
-            el.src = sourceImg.src;
-            el.alt = sourceImg.alt || '';
-        } else {
-            return;
+            video.appendChild(s);
+            mediaBox.appendChild(video);
         }
 
-        // Remove any previous media, then insert the new one before the close button
-        if (activeMedia) activeMedia.remove();
-        activeMedia = el;
-        content.insertBefore(el, closeBtn);
-
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        sheet.scrollTop = 0;
+        modal.setAttribute('aria-hidden', 'false');
+        document.documentElement.classList.add('modal-open');
+        modal.classList.add('open');
+        closeBtn.focus({ preventScroll: true });
     };
 
-    mediaBoxes.forEach((box) => {
-        // Hover hint so the click-to-enlarge affordance is discoverable
-        const hint = document.createElement('div');
-        hint.className = 'project-zoom-hint';
-        hint.innerHTML = '<i class="fas fa-expand"></i>';
-        box.appendChild(hint);
+    const closeModal = () => {
+        if (!modal.classList.contains('open')) return;
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.documentElement.classList.remove('modal-open');
+        const video = $('video', mediaBox);
+        if (video) video.pause();
+        setTimeout(() => { if (!modal.classList.contains('open')) mediaBox.innerHTML = ''; }, 400);
+        if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    };
 
-        box.addEventListener('click', () => openLightbox(box));
-    });
-
-    closeBtn.addEventListener('click', closeLightbox);
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeLightbox();
-    });
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && overlay.classList.contains('active')) closeLightbox();
-    });
-};
-
-initProjectLightbox();
-
-// ========================================
-// Active Navigation Link Highlighting
-// ========================================
-const highlightActiveLink = () => {
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    window.addEventListener('scroll', () => {
-        let current = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= sectionTop - 300) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.style.color = '';
-            if (link.getAttribute('href').slice(1) === current) {
-                link.style.color = 'var(--github-green)';
-                link.style.textShadow = '0 0 10px rgba(15, 191, 63, 0.5)';
-            } else {
-                link.style.textShadow = 'none';
+    tiles.forEach((tile) => {
+        tile.addEventListener('click', () => openTile(tile));
+        tile.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openTile(tile);
             }
         });
     });
-};
-
-highlightActiveLink();
-
-// ========================================
-// Smooth Page Load Animation
-// ========================================
-window.addEventListener('load', () => {
-    document.body.style.opacity = '1';
-    
-    const heroContent = document.querySelector('.hero-content');
-    if (heroContent) {
-        heroContent.style.animation = 'fadeInUp 1s ease 0.3s both';
-    }
-});
-
-// ========================================
-// Parallax Effect for Hero Section
-// ========================================
-const addParallaxEffect = () => {
-    const heroSection = document.querySelector('.hero');
-    if (!heroSection) return;
-    
-    window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY;
-        
-        if (scrollPosition < window.innerHeight) {
-            heroSection.style.backgroundPosition = `0 ${scrollPosition * 0.3}px`;
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+    document.addEventListener('keydown', (event) => {
+        if (!modal.classList.contains('open')) return;
+        if (event.key === 'Escape') { closeModal(); return; }
+        if (event.key === 'Tab') {
+            // Keep focus inside the sheet.
+            const items = $$('button, a[href], video[controls]', sheet).filter((el) => el.offsetParent !== null);
+            if (!items.length) return;
+            const first = items[0];
+            const last = items[items.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
         }
     });
-};
 
-addParallaxEffect();
+    // ----------------------------------------------------------------------
+    // Motion. Everything below needs GSAP and no reduced-motion preference.
+    // ----------------------------------------------------------------------
+    if (!animate) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-// ========================================
-// Text Reveal Animation on Scroll
-// ========================================
-const addTextRevealAnimation = () => {
-    const titles = document.querySelectorAll('.hero-title, .projects-header h2, .skills-header h2, .contact h2, .project-content h3');
-    
-    titles.forEach(title => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s ease 0.2s both';
-                    observer.unobserve(entry.target);
-                }
+    // The name is split by hand so each letter can rise from behind its word's mask.
+    const name = $('#name');
+    name.innerHTML = name.textContent
+        .split(' ')
+        .map((word) =>
+            '<span class="word" aria-hidden="true">' +
+            word.split('').map((ch) => '<span class="ch">' + ch + '</span>').join('') +
+            '</span>')
+        .join(' ');
+
+    // Arrival
+    const arrival = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    arrival
+        .from('.hero .eyebrow', { autoAlpha: 0, y: 10, duration: 0.6 }, 0)
+        .from('.name .ch', { yPercent: 112, duration: 0.9, stagger: 0.028 }, 0.1)
+        .from('.claim-big', { autoAlpha: 0, y: 16, duration: 0.8 }, 0.75)
+        .from('.hero-cta', { autoAlpha: 0, y: 14, duration: 0.7 }, 0.95);
+    // Timers keep running when animation frames are held back, so a slow device never sits on a blank hero.
+    setTimeout(() => arrival.progress(1), 2600);
+
+    // The portrait grows into place as it scrolls into view.
+    gsap.fromTo('.portrait', { scale: 0.86, y: 40 }, {
+        scale: 1,
+        y: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: '.portrait', start: 'top 98%', end: 'top 38%', scrub: 0.6 }
+    });
+
+    // Highlights step in.
+    gsap.from('.facts > div', {
+        autoAlpha: 0, y: 22, duration: 0.7, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.facts', start: 'top 90%', once: true }
+    });
+
+    // Statement: words come up from dim to full brightness as you scroll.
+    const statement = $('#statement');
+    const pieces = [];
+    statement.childNodes.forEach((node) => {
+        if (node.nodeType === 3) {
+            node.textContent.split(/(\s+)/).forEach((word) => {
+                if (!word) return;
+                if (/^\s+$/.test(word)) { pieces.push(document.createTextNode(word)); return; }
+                const span = document.createElement('span');
+                span.className = 'w';
+                span.textContent = word;
+                pieces.push(span);
             });
-        }, { threshold: 0.1 });
-        
-        observer.observe(title);
+        } else {
+            node.classList.add('w');
+            pieces.push(node);
+        }
     });
-};
-
-addTextRevealAnimation();
-
-// ========================================
-// Keyboard Navigation Support
-// ========================================
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        console.log('Escape key pressed');
-    }
-});
-
-// ========================================
-// Accessibility: Reduced Motion Support
-// ========================================
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (prefersReducedMotion) {
-    document.documentElement.style.setProperty('--transition-smooth', '0s');
-    document.documentElement.style.setProperty('--transition-fast', '0s');
-    
-    document.querySelectorAll('*').forEach(el => {
-        el.style.animation = 'none !important';
-        el.style.transition = 'none !important';
+    statement.textContent = '';
+    pieces.forEach((piece) => statement.appendChild(piece));
+    gsap.fromTo('#statement .w', { opacity: 0.4 }, {
+        opacity: 1,
+        stagger: 0.05,
+        ease: 'none',
+        scrollTrigger: { trigger: statement, start: 'top 80%', end: 'bottom 52%', scrub: 0.5 }
     });
-}
 
-// ========================================
-// Cursor Effects
-// ========================================
-const addCursorEffect = () => {
-    const interactiveElements = document.querySelectorAll('a, button, .cta-button, .project-link, .skill-list span, .contact-item');
-    
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', function() {
-            this.style.cursor = 'pointer';
+    // Section headings rise once as they arrive.
+    $$('.sec-head, .close h2, .close .sec-sub, .reach, .address').forEach((el) => {
+        gsap.from(el, {
+            autoAlpha: 0, y: 30, duration: 0.9, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 90%', once: true }
         });
     });
-};
 
-addCursorEffect();
-
-// ========================================
-// Performance Optimization: Debounce Scroll
-// ========================================
-const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-};
-
-const debouncedScroll = debounce(() => {
-    // Scroll-based logic here
-}, 100);
-
-window.addEventListener('scroll', debouncedScroll);
-
-// ========================================
-// Scroll Progress Indicator
-// ========================================
-const createScrollProgress = () => {
-    const progressBar = document.createElement('div');
-    progressBar.style.position = 'fixed';
-    progressBar.style.top = '0';
-    progressBar.style.left = '0';
-    progressBar.style.height = '3px';
-    progressBar.style.background = 'linear-gradient(90deg, #0FBF3F, #5FED83)';
-    progressBar.style.width = '0%';
-    progressBar.style.zIndex = '999';
-    progressBar.style.transition = 'width 0.1s ease';
-    progressBar.style.boxShadow = '0 0 10px rgba(15, 191, 63, 0.5)';
-    document.body.appendChild(progressBar);
-    
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        progressBar.style.width = scrollPercent + '%';
-    });
-};
-
-createScrollProgress();
-
-// ========================================
-// Lazy Load Animation for Images
-// ========================================
-const observeImages = () => {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                if (img.complete) {
-                    // Already loaded (cached, or finished before the
-                    // observer fired) — onload won't fire again, so show it now.
-                    img.style.opacity = '1';
-                } else {
-                    img.style.opacity = '0';
-                    img.style.transition = 'opacity 0.6s ease';
-                    img.addEventListener('load', () => {
-                        img.style.opacity = '1';
-                    });
-                }
-                observer.unobserve(img);
-            }
+    // Tiles and skill cards arrive in batches.
+    [['.tile', 0.1], ['.spec', 0.08]].forEach(([selector, stagger]) => {
+        gsap.set(selector, { autoAlpha: 0, y: 40 });
+        ScrollTrigger.batch(selector, {
+            start: 'top 92%',
+            once: true,
+            onEnter: (batch) => gsap.to(batch, {
+                autoAlpha: 1, y: 0, duration: 0.8, stagger, ease: 'power3.out', overwrite: true,
+                // Hand the transform back to CSS so the hover lift works.
+                onComplete: () => gsap.set(batch, { clearProps: 'transform' })
+            })
         });
     });
-    
-    document.querySelectorAll('img').forEach(img => {
-        imageObserver.observe(img);
-    });
-};
 
-observeImages();
-
-// ========================================
-// Smooth Page Load
-// ========================================
-document.body.style.opacity = '0';
-window.addEventListener('load', () => {
-    document.body.style.transition = 'opacity 0.6s ease';
-    document.body.style.opacity = '1';
-});
+    window.addEventListener('load', () => ScrollTrigger.refresh());
+})();
