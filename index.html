@@ -203,16 +203,41 @@
                         </div>
                     </article>
 
-                    <!-- 06 Movie Ratings Analysis -->
-                    <article class="tile" data-cat="data" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Movie Ratings Analysis">
+                    <!-- 06 GraphRAG-MCP -->
+                    <article class="tile" data-cat="ml" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: GraphRAG-MCP">
                         <div class="tile-top">
                             <p class="eyebrow data">Case file 06 &middot; Machine Learning</p>
+                            <h3>GraphRAG-MCP</h3>
+                            <p class="tile-sum">A multi-hop research agent that combines GraphRAG, hybrid retrieval and DSPy-optimized prompts, with an ablation ladder that measures what each component actually buys.</p>
+                        </div>
+                        <!-- Add a video: replace the .tile-art block with
+                             <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
+                        <div class="tile-art" aria-hidden="true">06</div>
+                        <span class="tile-plus" aria-hidden="true"></span>
+                        <div class="detail" hidden>
+                            <dl class="label data">
+                                <dt>Type</dt><dd>Machine Learning</dd>
+                                <dt>Status</dt><dd>Planned</dd>
+                                <dt>Medium</dt><dd>Python, LlamaIndex, DSPy, MCP, GraphRAG (entity graph + Leiden community detection), Qdrant (hybrid dense + sparse), Milvus, FAISS, BGE embeddings and re-ranking, spaCy, PostgreSQL, Hugging Face Transformers, W&amp;B or MLflow, Docker</dd>
+                            </dl>
+                            <p>Plain RAG fails on multi-hop questions such as &ldquo;Which university did the founder of the company that made X attend?&rdquo;, because no single chunk contains the answer. GraphRAG-MCP is a research agent built to handle them, and it <strong>measures whether each added component actually helps</strong>.</p>
+                            <p><strong>The retrieval stack.</strong> A graph index (entities and relations extracted with spaCy and an LLM, an entity graph, <strong>Leiden community detection</strong>, and a summary of each community, following the Microsoft GraphRAG approach) sits beside hybrid retrieval: dense and sparse search in <strong>Qdrant</strong> with a <strong>BGE cross-encoder</strong> re-ranker, plus a FAISS / Milvus comparison on recall and latency.</p>
+                            <p><strong>The agent.</strong> The retriever, the graph query and a SQL lookup are exposed as <strong>MCP</strong> tools, so any MCP-compatible agent can use them. Query decomposition, retrieval and answer synthesis are written as <strong>DSPy</strong> modules and compiled with an optimizer such as MIPROv2 or BootstrapFewShot against a training split.</p>
+                            <p><strong>The evaluation.</strong> It runs on a public multi-hop QA benchmark (HotpotQA, MuSiQue or 2WikiMultiHopQA) with an ablation ladder: naive RAG, then hybrid plus re-ranking, then GraphRAG, then the agent, then the DSPy-compiled agent. Each rung reports exact match, F1, faithfulness, and cost and latency per query, including the cases where a component buys nothing.</p>
+                            <p><strong>Status.</strong> Planned: nothing is built yet, so there are no results to report.</p>
+                        </div>
+                    </article>
+
+                    <!-- 07 Movie Ratings Analysis -->
+                    <article class="tile" data-cat="data" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Movie Ratings Analysis">
+                        <div class="tile-top">
+                            <p class="eyebrow data">Case file 07 &middot; Machine Learning</p>
                             <h3>Movie Ratings Analysis</h3>
                             <p class="tile-sum">Analyzes viewer rating patterns and builds predictive models using neural networks with PCA and K-Means clustering.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">06</div>
+                        <div class="tile-art" aria-hidden="true">07</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
@@ -225,16 +250,16 @@
                         </div>
                     </article>
 
-                    <!-- 07 Premier League Analysis -->
+                    <!-- 08 Premier League Analysis -->
                     <article class="tile" data-cat="data" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open case file: Premier League Analysis">
                         <div class="tile-top">
-                            <p class="eyebrow data">Case file 07 &middot; Data Analytics</p>
+                            <p class="eyebrow data">Case file 08 &middot; Data Analytics</p>
                             <h3>Premier League Analysis</h3>
                             <p class="tile-sum">Explores English Premier League team performances, focusing on wins, home vs. away results, and statistical insights.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
-                        <div class="tile-art" aria-hidden="true">07</div>
+                        <div class="tile-art" aria-hidden="true">08</div>
                         <span class="tile-plus" aria-hidden="true"></span>
                         <div class="detail" hidden>
                             <dl class="label data">
