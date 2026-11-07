@@ -125,7 +125,7 @@
                                 <strong>gRPC streaming</strong> or a browser HTTP API, and a <strong>React</strong> web app shows each
                                 node&rsquo;s state and moves to another node when one goes down.
                             </p>
-                            <p><strong>What is shown.</strong> Writes resume after the Raft leader is killed (20 kills, latest run: median 192&nbsp;ms, p95 537&nbsp;ms).
+                            <p><strong>What is shown.</strong> Writes resume after the Raft leader is killed (20 kills, timed from when the kill command returns, so it understates the full outage: median 192&nbsp;ms, p95 537&nbsp;ms).
                                 The file API passes a <strong>Porcupine linearizability</strong> check under kills, freezes and partitions
                                 (8 single-fault scenarios and 4 mixed schedules). A 256&nbsp;MiB upload peaks at 45&nbsp;MiB of node heap (test limit 64&nbsp;MiB).
                                 Garbage collection racing an upload never loses a chunk. Accounts (argon2id, signed tokens) keep users apart:
