@@ -115,7 +115,7 @@
                             <dl class="label data">
                                 <dt>Type</dt><dd>Full Stack</dd>
                                 <dt>Status</dt><dd>In Progress</dd>
-                                <dt>Medium</dt><dd>Go, Raft (hashicorp/raft), bbolt, gRPC, Protobuf, MinIO, React, TypeScript, Vite, Docker Compose, Prometheus, Grafana, Porcupine, argon2id</dd>
+                                <dt>Medium</dt><dd>Go, Raft (hashicorp/raft), bbolt, gRPC, Protobuf, MinIO, React, TypeScript, Vite, Docker Compose, Prometheus, Grafana, Porcupine, argon2id, TLS, tc netem</dd>
                             </dl>
                             <p>
                                 A distributed, content-addressed file store in <strong>Go</strong>. Files are cut into 4&nbsp;MiB chunks
@@ -125,16 +125,25 @@
                                 <strong>gRPC streaming</strong> or a browser HTTP API, and a <strong>React</strong> web app shows each
                                 node&rsquo;s state and moves to another node when one goes down.
                             </p>
-                            <p><strong>What is shown.</strong> Writes resume after the Raft leader is killed (20 kills: p50 0.88&nbsp;s, p95 1.2&nbsp;s).
+                            <p><strong>What is shown.</strong> Writes resume after the Raft leader is killed (20 kills, latest run: median 192&nbsp;ms, p95 537&nbsp;ms).
                                 The file API passes a <strong>Porcupine linearizability</strong> check under kills, freezes and partitions
-                                (8 single-fault scenarios and 4 mixed schedules). A 256&nbsp;MiB upload peaks at 34&nbsp;MiB of node heap.
+                                (8 single-fault scenarios and 4 mixed schedules). A 256&nbsp;MiB upload peaks at 45&nbsp;MiB of node heap (test limit 64&nbsp;MiB).
                                 Garbage collection racing an upload never loses a chunk. Accounts (argon2id, signed tokens) keep users apart:
                                 someone else&rsquo;s file looks exactly like a missing one.</p>
+                            <p><strong>A slow, lossy network, emulated.</strong> With 20&nbsp;ms of one-way delay and 0.5% packet loss
+                                added inside the containers (<code>tc netem</code>, one machine), the integration, failover and load tests had
+                                no failures. After a leader kill, writes resumed after a median of 1.24&nbsp;s (p95 1.70&nbsp;s), against
+                                192&nbsp;ms (p95 537&nbsp;ms) on the plain cluster. One client&rsquo;s 4&nbsp;MiB transfers fell from 42&nbsp;MB/s
+                                (write) and 95&nbsp;MB/s (read) to 1.2 and 1.5&nbsp;MB/s. All 10 single-fault histories checked there were
+                                linearizable, although one scenario failed a harness check once and did not reproduce. An early jitter setting
+                                made the emulator itself look like a 15&nbsp;s slowdown; testing each setting separately showed packet
+                                reordering, so jitter is off and the reason is written down.</p>
                             <p><strong>A bug the evidence found.</strong> A dedup check that waited for every store made one hung store
                                 delay every upload by the 10&nbsp;s timeout. A load test exposed it, a failing-first test pinned it, and a per-store
                                 circuit breaker removed the stall that remained.</p>
-                            <p><strong>Limits.</strong> Every number comes from one laptop running Docker Compose, not a real network.
-                                There is no TLS yet. Next: run it on separate machines and repeat the failure tests there.</p>
+                            <p><strong>Limits.</strong> Every number comes from one laptop running Docker Compose, and the slow-network runs are
+                                emulated, not a real network. TLS is opt-in and covers only the client-facing ports, not Raft, metadata or
+                                MinIO traffic. Tokens cannot be revoked early. Next: run it on separate machines and repeat the failure tests there.</p>
                             <div class="links data"><a href="https://github.com/Shubhoom123/File_Storage" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a></div>
                         </div>
                     </article>
