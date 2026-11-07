@@ -105,7 +105,7 @@
                         <div class="tile-top">
                             <p class="eyebrow data">Case file 02 &middot; Full Stack</p>
                             <h3>Distributed File Storage System</h3>
-                            <p class="tile-sum">A distributed object storage engine built in Golang with file chunking (4MB blocks), SHA-256 content-addressed deduplication, and a gRPC streaming service.</p>
+                            <p class="tile-sum">A distributed file store in Go. Files are cut into 4 MiB SHA-256-addressed chunks, replicated across three MinIO stores, with metadata in a Raft group formed by the app nodes themselves. Each claim points at a test or a measurement.</p>
                         </div>
                         <!-- Add a video: replace the .tile-art block with
                              <div class="tile-media"><video autoplay muted loop playsinline><source src="Gifs/YOUR-VIDEO.mp4" type="video/mp4"></video></div> -->
@@ -115,19 +115,27 @@
                             <dl class="label data">
                                 <dt>Type</dt><dd>Full Stack</dd>
                                 <dt>Status</dt><dd>In Progress</dd>
-                                <dt>Medium</dt><dd>Go, SQL, Protobuf, Bash, gRPC, Docker, Kubernetes, MinIO, PostgreSQL, Prometheus, OpenTelemetry</dd>
+                                <dt>Medium</dt><dd>Go, Raft (hashicorp/raft), bbolt, gRPC, Protobuf, MinIO, React, TypeScript, Vite, Docker Compose, Prometheus, Grafana, Porcupine, argon2id</dd>
                             </dl>
                             <p>
-                                A distributed object storage engine built in <strong>Golang</strong> with file chunking (4MB blocks),
-                                SHA-256 content-addressed deduplication, and a <strong>gRPC streaming service</strong>.
-                                This implements a consistent hash ring with virtual nodes and replication factor 3 across a
-                                <strong>MinIO cluster</strong>, reducing redundant storage by 40% in load-test benchmarks with others.
-                                Features <strong>PostgreSQL stored metadata versioning</strong> similar to Git in terms of permanent record like commits in Git, vector clock
-                                conflict detection, and CRDT merge strategies for concurrent disconnected writes. Deployed
-                                on a <strong>3-node Kubernetes cluster</strong> with automatic leader election, regional
-                                request routing, and monitoring via Prometheus and OpenTelemetry.
+                                A distributed, content-addressed file store in <strong>Go</strong>. Files are cut into 4&nbsp;MiB chunks
+                                named by SHA-256 and written to three <strong>MinIO</strong> stores (write quorum of 2, hash-verified
+                                reads with repair). All metadata lives in a <strong>Raft</strong> group (hashicorp/raft with a bbolt
+                                state machine) formed by the three app nodes, so there is no external database. Clients use
+                                <strong>gRPC streaming</strong> or a browser HTTP API, and a <strong>React</strong> web app shows each
+                                node&rsquo;s state and moves to another node when one goes down.
                             </p>
-                            <div class="links data"><a href="#" data-placeholder>View on GitHub &rarr;</a></div>
+                            <p><strong>What is shown.</strong> Writes resume after the Raft leader is killed (20 kills: p50 0.88&nbsp;s, p95 1.2&nbsp;s).
+                                The file API passes a <strong>Porcupine linearizability</strong> check under kills, freezes and partitions
+                                (8 single-fault scenarios and 4 mixed schedules). A 256&nbsp;MiB upload peaks at 34&nbsp;MiB of node heap.
+                                Garbage collection racing an upload never loses a chunk. Accounts (argon2id, signed tokens) keep users apart:
+                                someone else&rsquo;s file looks exactly like a missing one.</p>
+                            <p><strong>A bug the evidence found.</strong> A dedup check that waited for every store made one hung store
+                                delay every upload by the 10&nbsp;s timeout. A load test exposed it, a failing-first test pinned it, and a per-store
+                                circuit breaker removed the stall that remained.</p>
+                            <p><strong>Limits.</strong> Every number comes from one laptop running Docker Compose, not a real network.
+                                There is no TLS yet. Next: run it on separate machines and repeat the failure tests there.</p>
+                            <div class="links data"><a href="https://github.com/Shubhoom123/File_Storage" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a></div>
                         </div>
                     </article>
 
